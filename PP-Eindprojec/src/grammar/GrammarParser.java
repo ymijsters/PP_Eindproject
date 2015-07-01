@@ -1,4 +1,4 @@
-// Generated from Grammar.g4 by ANTLR 4.4
+// Generated from Grammar.g4 by ANTLR 4.5
 package grammar;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class GrammarParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.5", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -22,24 +22,60 @@ public class GrammarParser extends Parser {
 		RCURLY=19, LPAR=20, RPAR=21, IN=22, PRINT=23, BOOL=24, FOR=25, INT=26, 
 		WHILE=27, IF=28, ELSE=29, TRUE=30, FALSE=31, BREAK=32, CONTINUE=33, ID=34, 
 		NUM=35, STRING=36, WS=37, TIMES=38, DIVIDE=39, GE=40, LE=41;
-	public static final String[] tokenNames = {
-		"<INVALID>", "'.'", "';'", "','", "'['", "']'", "'='", "'!'", "'||'", 
-		"'&&'", "'|'", "'&'", "'+'", "'-'", "'<'", "'>'", "'=='", "'!='", "'{'", 
-		"'}'", "'('", "')'", "'in'", "'printf'", "'boolean'", "'for'", "'int'", 
-		"'while'", "'if'", "'else'", "'true'", "'false'", "'break'", "'continue'", 
-		"ID", "NUM", "STRING", "WS", "TIMES", "DIVIDE", "GE", "LE"
-	};
 	public static final int
 		RULE_program = 0, RULE_stat = 1, RULE_target = 2, RULE_expr = 3, RULE_type = 4;
 	public static final String[] ruleNames = {
 		"program", "stat", "target", "expr", "type"
 	};
 
-	@Override
-	public String getGrammarFileName() { return "Grammar.g4"; }
+	private static final String[] _LITERAL_NAMES = {
+		null, "'.'", "';'", "','", "'['", "']'", "'='", "'!'", "'||'", "'&&'", 
+		"'|'", "'&'", "'+'", "'-'", "'<'", "'>'", "'=='", "'!='", "'{'", "'}'", 
+		"'('", "')'", "'in'", "'printf'", "'boolean'", "'for'", "'int'", "'while'", 
+		"'if'", "'else'", "'true'", "'false'", "'break'", "'continue'"
+	};
+	private static final String[] _SYMBOLIC_NAMES = {
+		null, "DOT", "SEMI", "COMMA", "LSQ", "RSQ", "ASSIGN", "NOT", "OR", "AND", 
+		"BIT_OR", "BIT_AND", "PLUS", "MINUS", "LT", "GT", "EQ", "NE", "LCURLY", 
+		"RCURLY", "LPAR", "RPAR", "IN", "PRINT", "BOOL", "FOR", "INT", "WHILE", 
+		"IF", "ELSE", "TRUE", "FALSE", "BREAK", "CONTINUE", "ID", "NUM", "STRING", 
+		"WS", "TIMES", "DIVIDE", "GE", "LE"
+	};
+	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+		tokenNames = new String[_SYMBOLIC_NAMES.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			tokenNames[i] = VOCABULARY.getLiteralName(i);
+			if (tokenNames[i] == null) {
+				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+			}
+
+			if (tokenNames[i] == null) {
+				tokenNames[i] = "<INVALID>";
+			}
+		}
+	}
 
 	@Override
-	public String[] getTokenNames() { return tokenNames; }
+	@Deprecated
+	public String[] getTokenNames() {
+		return tokenNames;
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+		return VOCABULARY;
+	}
+
+	@Override
+	public String getGrammarFileName() { return "Grammar.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -56,11 +92,11 @@ public class GrammarParser extends Parser {
 	}
 	public static class ProgramContext extends ParserRuleContext {
 		public TerminalNode EOF() { return getToken(GrammarParser.EOF, 0); }
-		public StatContext stat(int i) {
-			return getRuleContext(StatContext.class,i);
-		}
 		public List<StatContext> stat() {
 			return getRuleContexts(StatContext.class);
+		}
+		public StatContext stat(int i) {
+			return getRuleContext(StatContext.class,i);
 		}
 		public ProgramContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -89,14 +125,16 @@ public class GrammarParser extends Parser {
 			do {
 				{
 				{
-				setState(10); stat();
+				setState(10);
+				stat();
 				}
 				}
 				setState(13); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LCURLY) | (1L << PRINT) | (1L << BOOL) | (1L << FOR) | (1L << INT) | (1L << WHILE) | (1L << IF) | (1L << BREAK) | (1L << CONTINUE) | (1L << ID))) != 0) );
-			setState(15); match(EOF);
+			setState(15);
+			match(EOF);
 			}
 		}
 		catch (RecognitionException re) {
@@ -122,29 +160,29 @@ public class GrammarParser extends Parser {
 		}
 	}
 	public static class ForStatContext extends StatContext {
-		public TerminalNode RPAR() { return getToken(GrammarParser.RPAR, 0); }
-		public TerminalNode LPAR() { return getToken(GrammarParser.LPAR, 0); }
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
-		}
 		public TerminalNode FOR() { return getToken(GrammarParser.FOR, 0); }
-		public List<TerminalNode> ASSIGN() { return getTokens(GrammarParser.ASSIGN); }
-		public List<TerminalNode> SEMI() { return getTokens(GrammarParser.SEMI); }
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
-		}
+		public TerminalNode LPAR() { return getToken(GrammarParser.LPAR, 0); }
 		public List<TerminalNode> ID() { return getTokens(GrammarParser.ID); }
-		public StatContext stat() {
-			return getRuleContext(StatContext.class,0);
+		public TerminalNode ID(int i) {
+			return getToken(GrammarParser.ID, i);
 		}
+		public List<TerminalNode> ASSIGN() { return getTokens(GrammarParser.ASSIGN); }
 		public TerminalNode ASSIGN(int i) {
 			return getToken(GrammarParser.ASSIGN, i);
 		}
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public List<TerminalNode> SEMI() { return getTokens(GrammarParser.SEMI); }
 		public TerminalNode SEMI(int i) {
 			return getToken(GrammarParser.SEMI, i);
 		}
-		public TerminalNode ID(int i) {
-			return getToken(GrammarParser.ID, i);
+		public TerminalNode RPAR() { return getToken(GrammarParser.RPAR, 0); }
+		public StatContext stat() {
+			return getRuleContext(StatContext.class,0);
 		}
 		public ForStatContext(StatContext ctx) { copyFrom(ctx); }
 		@Override
@@ -158,11 +196,11 @@ public class GrammarParser extends Parser {
 	}
 	public static class WhileStatContext extends StatContext {
 		public TerminalNode WHILE() { return getToken(GrammarParser.WHILE, 0); }
-		public TerminalNode RPAR() { return getToken(GrammarParser.RPAR, 0); }
 		public TerminalNode LPAR() { return getToken(GrammarParser.LPAR, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
+		public TerminalNode RPAR() { return getToken(GrammarParser.RPAR, 0); }
 		public StatContext stat() {
 			return getRuleContext(StatContext.class,0);
 		}
@@ -177,12 +215,12 @@ public class GrammarParser extends Parser {
 		}
 	}
 	public static class AssignStatContext extends StatContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
-		}
-		public TerminalNode ASSIGN() { return getToken(GrammarParser.ASSIGN, 0); }
 		public TargetContext target() {
 			return getRuleContext(TargetContext.class,0);
+		}
+		public TerminalNode ASSIGN() { return getToken(GrammarParser.ASSIGN, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
 		}
 		public TerminalNode SEMI() { return getToken(GrammarParser.SEMI, 0); }
 		public AssignStatContext(StatContext ctx) { copyFrom(ctx); }
@@ -197,15 +235,15 @@ public class GrammarParser extends Parser {
 	}
 	public static class PrintStatContext extends StatContext {
 		public TerminalNode PRINT() { return getToken(GrammarParser.PRINT, 0); }
-		public TerminalNode RPAR() { return getToken(GrammarParser.RPAR, 0); }
 		public TerminalNode LPAR() { return getToken(GrammarParser.LPAR, 0); }
-		public List<TerminalNode> ID() { return getTokens(GrammarParser.ID); }
-		public List<TerminalNode> COMMA() { return getTokens(GrammarParser.COMMA); }
-		public TerminalNode SEMI() { return getToken(GrammarParser.SEMI, 0); }
 		public TerminalNode STRING() { return getToken(GrammarParser.STRING, 0); }
+		public TerminalNode RPAR() { return getToken(GrammarParser.RPAR, 0); }
+		public TerminalNode SEMI() { return getToken(GrammarParser.SEMI, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(GrammarParser.COMMA); }
 		public TerminalNode COMMA(int i) {
 			return getToken(GrammarParser.COMMA, i);
 		}
+		public List<TerminalNode> ID() { return getTokens(GrammarParser.ID); }
 		public TerminalNode ID(int i) {
 			return getToken(GrammarParser.ID, i);
 		}
@@ -221,18 +259,18 @@ public class GrammarParser extends Parser {
 	}
 	public static class IfStatContext extends StatContext {
 		public TerminalNode IF() { return getToken(GrammarParser.IF, 0); }
-		public StatContext stat(int i) {
-			return getRuleContext(StatContext.class,i);
-		}
-		public TerminalNode RPAR() { return getToken(GrammarParser.RPAR, 0); }
 		public TerminalNode LPAR() { return getToken(GrammarParser.LPAR, 0); }
-		public TerminalNode ELSE() { return getToken(GrammarParser.ELSE, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
+		public TerminalNode RPAR() { return getToken(GrammarParser.RPAR, 0); }
 		public List<StatContext> stat() {
 			return getRuleContexts(StatContext.class);
 		}
+		public StatContext stat(int i) {
+			return getRuleContext(StatContext.class,i);
+		}
+		public TerminalNode ELSE() { return getToken(GrammarParser.ELSE, 0); }
 		public IfStatContext(StatContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -245,13 +283,13 @@ public class GrammarParser extends Parser {
 	}
 	public static class BlockStatContext extends StatContext {
 		public TerminalNode LCURLY() { return getToken(GrammarParser.LCURLY, 0); }
-		public StatContext stat(int i) {
-			return getRuleContext(StatContext.class,i);
-		}
+		public TerminalNode RCURLY() { return getToken(GrammarParser.RCURLY, 0); }
 		public List<StatContext> stat() {
 			return getRuleContexts(StatContext.class);
 		}
-		public TerminalNode RCURLY() { return getToken(GrammarParser.RCURLY, 0); }
+		public StatContext stat(int i) {
+			return getRuleContext(StatContext.class,i);
+		}
 		public BlockStatContext(StatContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -263,8 +301,8 @@ public class GrammarParser extends Parser {
 		}
 	}
 	public static class ContStatContext extends StatContext {
-		public TerminalNode SEMI() { return getToken(GrammarParser.SEMI, 0); }
 		public TerminalNode CONTINUE() { return getToken(GrammarParser.CONTINUE, 0); }
+		public TerminalNode SEMI() { return getToken(GrammarParser.SEMI, 0); }
 		public ContStatContext(StatContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -276,8 +314,8 @@ public class GrammarParser extends Parser {
 		}
 	}
 	public static class BreakStatContext extends StatContext {
-		public TerminalNode SEMI() { return getToken(GrammarParser.SEMI, 0); }
 		public TerminalNode BREAK() { return getToken(GrammarParser.BREAK, 0); }
+		public TerminalNode SEMI() { return getToken(GrammarParser.SEMI, 0); }
 		public BreakStatContext(StatContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -289,14 +327,14 @@ public class GrammarParser extends Parser {
 		}
 	}
 	public static class DeclContext extends StatContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
-		}
-		public TerminalNode ASSIGN() { return getToken(GrammarParser.ASSIGN, 0); }
-		public TerminalNode SEMI() { return getToken(GrammarParser.SEMI, 0); }
-		public TerminalNode ID() { return getToken(GrammarParser.ID, 0); }
 		public TypeContext type() {
 			return getRuleContext(TypeContext.class,0);
+		}
+		public TerminalNode ID() { return getToken(GrammarParser.ID, 0); }
+		public TerminalNode SEMI() { return getToken(GrammarParser.SEMI, 0); }
+		public TerminalNode ASSIGN() { return getToken(GrammarParser.ASSIGN, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
 		}
 		public DeclContext(StatContext ctx) { copyFrom(ctx); }
 		@Override
@@ -321,45 +359,61 @@ public class GrammarParser extends Parser {
 				_localctx = new DeclContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(17); type();
-				setState(18); match(ID);
+				setState(17);
+				type();
+				setState(18);
+				match(ID);
 				setState(21);
 				_la = _input.LA(1);
 				if (_la==ASSIGN) {
 					{
-					setState(19); match(ASSIGN);
-					setState(20); expr(0);
+					setState(19);
+					match(ASSIGN);
+					setState(20);
+					expr(0);
 					}
 				}
 
-				setState(23); match(SEMI);
+				setState(23);
+				match(SEMI);
 				}
 				break;
 			case ID:
 				_localctx = new AssignStatContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(25); target();
-				setState(26); match(ASSIGN);
-				setState(27); expr(0);
-				setState(28); match(SEMI);
+				setState(25);
+				target();
+				setState(26);
+				match(ASSIGN);
+				setState(27);
+				expr(0);
+				setState(28);
+				match(SEMI);
 				}
 				break;
 			case IF:
 				_localctx = new IfStatContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(30); match(IF);
-				setState(31); match(LPAR);
-				setState(32); expr(0);
-				setState(33); match(RPAR);
-				setState(34); stat();
+				setState(30);
+				match(IF);
+				setState(31);
+				match(LPAR);
+				setState(32);
+				expr(0);
+				setState(33);
+				match(RPAR);
+				setState(34);
+				stat();
 				setState(37);
 				switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 				case 1:
 					{
-					setState(35); match(ELSE);
-					setState(36); stat();
+					setState(35);
+					match(ELSE);
+					setState(36);
+					stat();
 					}
 					break;
 				}
@@ -369,92 +423,124 @@ public class GrammarParser extends Parser {
 				_localctx = new WhileStatContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(39); match(WHILE);
-				setState(40); match(LPAR);
-				setState(41); expr(0);
-				setState(42); match(RPAR);
-				setState(43); stat();
+				setState(39);
+				match(WHILE);
+				setState(40);
+				match(LPAR);
+				setState(41);
+				expr(0);
+				setState(42);
+				match(RPAR);
+				setState(43);
+				stat();
 				}
 				break;
 			case FOR:
 				_localctx = new ForStatContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(45); match(FOR);
-				setState(46); match(LPAR);
-				setState(47); match(ID);
-				setState(48); match(ASSIGN);
-				setState(49); expr(0);
-				setState(50); match(SEMI);
-				setState(51); expr(0);
-				setState(52); match(SEMI);
-				setState(53); match(ID);
-				setState(54); match(ASSIGN);
-				setState(55); expr(0);
-				setState(56); match(RPAR);
-				setState(57); stat();
+				setState(45);
+				match(FOR);
+				setState(46);
+				match(LPAR);
+				setState(47);
+				match(ID);
+				setState(48);
+				match(ASSIGN);
+				setState(49);
+				expr(0);
+				setState(50);
+				match(SEMI);
+				setState(51);
+				expr(0);
+				setState(52);
+				match(SEMI);
+				setState(53);
+				match(ID);
+				setState(54);
+				match(ASSIGN);
+				setState(55);
+				expr(0);
+				setState(56);
+				match(RPAR);
+				setState(57);
+				stat();
 				}
 				break;
 			case LCURLY:
 				_localctx = new BlockStatContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(59); match(LCURLY);
+				setState(59);
+				match(LCURLY);
 				setState(63);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LCURLY) | (1L << PRINT) | (1L << BOOL) | (1L << FOR) | (1L << INT) | (1L << WHILE) | (1L << IF) | (1L << BREAK) | (1L << CONTINUE) | (1L << ID))) != 0)) {
 					{
 					{
-					setState(60); stat();
+					setState(60);
+					stat();
 					}
 					}
 					setState(65);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(66); match(RCURLY);
+				setState(66);
+				match(RCURLY);
 				}
 				break;
 			case PRINT:
 				_localctx = new PrintStatContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(67); match(PRINT);
-				setState(68); match(LPAR);
-				setState(69); match(STRING);
+				setState(67);
+				match(PRINT);
+				setState(68);
+				match(LPAR);
+				setState(69);
+				match(STRING);
 				setState(74);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(70); match(COMMA);
-					setState(71); match(ID);
+					setState(70);
+					match(COMMA);
+					setState(71);
+					match(ID);
 					}
 					}
 					setState(76);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(77); match(RPAR);
-				setState(78); match(SEMI);
+				setState(77);
+				match(RPAR);
+				setState(78);
+				match(SEMI);
 				}
 				break;
 			case BREAK:
 				_localctx = new BreakStatContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
-				setState(79); match(BREAK);
-				setState(80); match(SEMI);
+				setState(79);
+				match(BREAK);
+				setState(80);
+				match(SEMI);
 				}
 				break;
 			case CONTINUE:
 				_localctx = new ContStatContext(_localctx);
 				enterOuterAlt(_localctx, 9);
 				{
-				setState(81); match(CONTINUE);
-				setState(82); match(SEMI);
+				setState(81);
+				match(CONTINUE);
+				setState(82);
+				match(SEMI);
 				}
 				break;
 			default:
@@ -496,12 +582,12 @@ public class GrammarParser extends Parser {
 		}
 	}
 	public static class ArrayTargetContext extends TargetContext {
-		public TerminalNode RSQ() { return getToken(GrammarParser.RSQ, 0); }
+		public TerminalNode ID() { return getToken(GrammarParser.ID, 0); }
+		public TerminalNode LSQ() { return getToken(GrammarParser.LSQ, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public TerminalNode ID() { return getToken(GrammarParser.ID, 0); }
-		public TerminalNode LSQ() { return getToken(GrammarParser.LSQ, 0); }
+		public TerminalNode RSQ() { return getToken(GrammarParser.RSQ, 0); }
 		public ArrayTargetContext(TargetContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -523,17 +609,22 @@ public class GrammarParser extends Parser {
 				_localctx = new IdTargetContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(85); match(ID);
+				setState(85);
+				match(ID);
 				}
 				break;
 			case 2:
 				_localctx = new ArrayTargetContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(86); match(ID);
-				setState(87); match(LSQ);
-				setState(88); expr(0);
-				setState(89); match(RSQ);
+				setState(86);
+				match(ID);
+				setState(87);
+				match(LSQ);
+				setState(88);
+				expr(0);
+				setState(89);
+				match(RSQ);
 				}
 				break;
 			}
@@ -564,10 +655,10 @@ public class GrammarParser extends Parser {
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
-		public TerminalNode AND() { return getToken(GrammarParser.AND, 0); }
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
+		public TerminalNode AND() { return getToken(GrammarParser.AND, 0); }
 		public AndExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -591,9 +682,9 @@ public class GrammarParser extends Parser {
 		}
 	}
 	public static class VarExprContext extends ExprContext {
+		public TerminalNode NUM() { return getToken(GrammarParser.NUM, 0); }
 		public TerminalNode TRUE() { return getToken(GrammarParser.TRUE, 0); }
 		public TerminalNode FALSE() { return getToken(GrammarParser.FALSE, 0); }
-		public TerminalNode NUM() { return getToken(GrammarParser.NUM, 0); }
 		public VarExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -605,15 +696,15 @@ public class GrammarParser extends Parser {
 		}
 	}
 	public static class ArithExprContext extends ExprContext {
-		public TerminalNode TIMES() { return getToken(GrammarParser.TIMES, 0); }
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
-		public TerminalNode MINUS() { return getToken(GrammarParser.MINUS, 0); }
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public TerminalNode PLUS() { return getToken(GrammarParser.PLUS, 0); }
+		public TerminalNode MINUS() { return getToken(GrammarParser.MINUS, 0); }
+		public TerminalNode TIMES() { return getToken(GrammarParser.TIMES, 0); }
 		public TerminalNode DIVIDE() { return getToken(GrammarParser.DIVIDE, 0); }
 		public ArithExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
@@ -625,37 +716,29 @@ public class GrammarParser extends Parser {
 			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitArithExpr(this);
 		}
 	}
-	public static class CompExprContext extends ExprContext {
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
+	public static class NotExprContext extends ExprContext {
+		public TerminalNode NOT() { return getToken(GrammarParser.NOT, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
 		}
-		public TerminalNode LT() { return getToken(GrammarParser.LT, 0); }
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
-		}
-		public TerminalNode NE() { return getToken(GrammarParser.NE, 0); }
-		public TerminalNode LE() { return getToken(GrammarParser.LE, 0); }
-		public TerminalNode GT() { return getToken(GrammarParser.GT, 0); }
-		public TerminalNode EQ() { return getToken(GrammarParser.EQ, 0); }
-		public TerminalNode GE() { return getToken(GrammarParser.GE, 0); }
-		public CompExprContext(ExprContext ctx) { copyFrom(ctx); }
+		public NotExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterCompExpr(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterNotExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitCompExpr(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitNotExpr(this);
 		}
 	}
 	public static class OrExprContext extends ExprContext {
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
 		}
-		public TerminalNode OR() { return getToken(GrammarParser.OR, 0); }
 		public ExprContext expr(int i) {
 			return getRuleContext(ExprContext.class,i);
 		}
+		public TerminalNode OR() { return getToken(GrammarParser.OR, 0); }
 		public OrExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -666,19 +749,27 @@ public class GrammarParser extends Parser {
 			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitOrExpr(this);
 		}
 	}
-	public static class NotExprContext extends ExprContext {
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+	public static class CompExprContext extends ExprContext {
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
 		}
-		public TerminalNode NOT() { return getToken(GrammarParser.NOT, 0); }
-		public NotExprContext(ExprContext ctx) { copyFrom(ctx); }
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public TerminalNode GT() { return getToken(GrammarParser.GT, 0); }
+		public TerminalNode GE() { return getToken(GrammarParser.GE, 0); }
+		public TerminalNode LT() { return getToken(GrammarParser.LT, 0); }
+		public TerminalNode LE() { return getToken(GrammarParser.LE, 0); }
+		public TerminalNode EQ() { return getToken(GrammarParser.EQ, 0); }
+		public TerminalNode NE() { return getToken(GrammarParser.NE, 0); }
+		public CompExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterNotExpr(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterCompExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitNotExpr(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitCompExpr(this);
 		}
 	}
 
@@ -706,8 +797,10 @@ public class GrammarParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 
-				setState(94); match(NOT);
-				setState(95); expr(1);
+				setState(94);
+				match(NOT);
+				setState(95);
+				expr(1);
 				}
 				break;
 			case TRUE:
@@ -721,8 +814,9 @@ public class GrammarParser extends Parser {
 				_la = _input.LA(1);
 				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << TRUE) | (1L << FALSE) | (1L << NUM))) != 0)) ) {
 				_errHandler.recoverInline(this);
+				} else {
+					consume();
 				}
-				consume();
 				}
 				break;
 			case ID:
@@ -730,7 +824,8 @@ public class GrammarParser extends Parser {
 				_localctx = new IdExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(97); match(ID);
+				setState(97);
+				match(ID);
 				}
 				break;
 			default:
@@ -757,9 +852,11 @@ public class GrammarParser extends Parser {
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PLUS) | (1L << MINUS) | (1L << TIMES) | (1L << DIVIDE))) != 0)) ) {
 						_errHandler.recoverInline(this);
+						} else {
+							consume();
 						}
-						consume();
-						setState(102); expr(8);
+						setState(102);
+						expr(8);
 						}
 						break;
 					case 2:
@@ -768,8 +865,10 @@ public class GrammarParser extends Parser {
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(103);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
-						setState(104); match(AND);
-						setState(105); expr(7);
+						setState(104);
+						match(AND);
+						setState(105);
+						expr(7);
 						}
 						break;
 					case 3:
@@ -778,8 +877,10 @@ public class GrammarParser extends Parser {
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(106);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(107); match(OR);
-						setState(108); expr(6);
+						setState(107);
+						match(OR);
+						setState(108);
+						expr(6);
 						}
 						break;
 					case 4:
@@ -792,9 +893,11 @@ public class GrammarParser extends Parser {
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LT) | (1L << GT) | (1L << EQ) | (1L << NE) | (1L << GE) | (1L << LE))) != 0)) ) {
 						_errHandler.recoverInline(this);
+						} else {
+							consume();
 						}
-						consume();
-						setState(111); expr(5);
+						setState(111);
+						expr(5);
 						}
 						break;
 					}
@@ -818,8 +921,8 @@ public class GrammarParser extends Parser {
 	}
 
 	public static class TypeContext extends ParserRuleContext {
-		public TerminalNode BOOL() { return getToken(GrammarParser.BOOL, 0); }
 		public TerminalNode INT() { return getToken(GrammarParser.INT, 0); }
+		public TerminalNode BOOL() { return getToken(GrammarParser.BOOL, 0); }
 		public TypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -845,8 +948,9 @@ public class GrammarParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==BOOL || _la==INT) ) {
 			_errHandler.recoverInline(this);
+			} else {
+				consume();
 			}
-			consume();
 			}
 		}
 		catch (RecognitionException re) {
@@ -862,16 +966,21 @@ public class GrammarParser extends Parser {
 
 	public boolean sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 3: return expr_sempred((ExprContext)_localctx, predIndex);
+		case 3:
+			return expr_sempred((ExprContext)_localctx, predIndex);
 		}
 		return true;
 	}
 	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0: return precpred(_ctx, 7);
-		case 1: return precpred(_ctx, 6);
-		case 2: return precpred(_ctx, 5);
-		case 3: return precpred(_ctx, 4);
+		case 0:
+			return precpred(_ctx, 7);
+		case 1:
+			return precpred(_ctx, 6);
+		case 2:
+			return precpred(_ctx, 5);
+		case 3:
+			return precpred(_ctx, 4);
 		}
 		return true;
 	}

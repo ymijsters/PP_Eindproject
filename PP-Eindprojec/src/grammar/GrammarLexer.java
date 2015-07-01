@@ -1,4 +1,4 @@
-// Generated from Grammar.g4 by ANTLR 4.4
+// Generated from Grammar.g4 by ANTLR 4.5
 package grammar;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class GrammarLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.4", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.5", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -26,14 +26,6 @@ public class GrammarLexer extends Lexer {
 		"DEFAULT_MODE"
 	};
 
-	public static final String[] tokenNames = {
-		"'\\u0000'", "'\\u0001'", "'\\u0002'", "'\\u0003'", "'\\u0004'", "'\\u0005'", 
-		"'\\u0006'", "'\\u0007'", "'\b'", "'\t'", "'\n'", "'\\u000B'", "'\f'", 
-		"'\r'", "'\\u000E'", "'\\u000F'", "'\\u0010'", "'\\u0011'", "'\\u0012'", 
-		"'\\u0013'", "'\\u0014'", "'\\u0015'", "'\\u0016'", "'\\u0017'", "'\\u0018'", 
-		"'\\u0019'", "'\\u001A'", "'\\u001B'", "'\\u001C'", "'\\u001D'", "'\\u001E'", 
-		"'\\u001F'", "' '", "'!'", "'\"'", "'#'", "'$'", "'%'"
-	};
 	public static final String[] ruleNames = {
 		"DOT", "SEMI", "COMMA", "LSQ", "RSQ", "ASSIGN", "NOT", "OR", "AND", "BIT_OR", 
 		"BIT_AND", "PLUS", "MINUS", "LT", "GT", "EQ", "NE", "LCURLY", "RCURLY", 
@@ -41,6 +33,52 @@ public class GrammarLexer extends Lexer {
 		"TRUE", "FALSE", "BREAK", "CONTINUE", "LETTER", "DIGIT", "ID", "NUM", 
 		"STRING", "WS"
 	};
+
+	private static final String[] _LITERAL_NAMES = {
+		null, "'.'", "';'", "','", "'['", "']'", "'='", "'!'", "'||'", "'&&'", 
+		"'|'", "'&'", "'+'", "'-'", "'<'", "'>'", "'=='", "'!='", "'{'", "'}'", 
+		"'('", "')'", "'in'", "'printf'", "'boolean'", "'for'", "'int'", "'while'", 
+		"'if'", "'else'", "'true'", "'false'", "'break'", "'continue'"
+	};
+	private static final String[] _SYMBOLIC_NAMES = {
+		null, "DOT", "SEMI", "COMMA", "LSQ", "RSQ", "ASSIGN", "NOT", "OR", "AND", 
+		"BIT_OR", "BIT_AND", "PLUS", "MINUS", "LT", "GT", "EQ", "NE", "LCURLY", 
+		"RCURLY", "LPAR", "RPAR", "IN", "PRINT", "BOOL", "FOR", "INT", "WHILE", 
+		"IF", "ELSE", "TRUE", "FALSE", "BREAK", "CONTINUE", "ID", "NUM", "STRING", 
+		"WS"
+	};
+	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+		tokenNames = new String[_SYMBOLIC_NAMES.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			tokenNames[i] = VOCABULARY.getLiteralName(i);
+			if (tokenNames[i] == null) {
+				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+			}
+
+			if (tokenNames[i] == null) {
+				tokenNames[i] = "<INVALID>";
+			}
+		}
+	}
+
+	@Override
+	@Deprecated
+	public String[] getTokenNames() {
+		return tokenNames;
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+		return VOCABULARY;
+	}
 
 
 	public GrammarLexer(CharStream input) {
@@ -50,9 +88,6 @@ public class GrammarLexer extends Lexer {
 
 	@Override
 	public String getGrammarFileName() { return "Grammar.g4"; }
-
-	@Override
-	public String[] getTokenNames() { return tokenNames; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

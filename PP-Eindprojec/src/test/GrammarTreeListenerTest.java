@@ -1,4 +1,4 @@
-package grammar;
+package test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +9,10 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.junit.Test;
+
+import compiler.GrammarTreeListenerCheck;
+import compiler.Type;
+import grammar.ParseException;
 import grammar.GrammarBaseListener.*;
 import grammar.GrammarParser.*;
 import static org.junit.Assert.assertEquals;

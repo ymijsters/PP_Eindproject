@@ -1,4 +1,4 @@
-package grammar;
+package compiler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,8 +12,10 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import grammar.Type;
 import grammar.ErrorListener;
+import grammar.GrammarBaseListener;
+import grammar.GrammarLexer;
+import grammar.GrammarParser;
 import grammar.ParseException;
 import grammar.GrammarParser.*;
 

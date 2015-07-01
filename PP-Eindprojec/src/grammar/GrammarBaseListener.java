@@ -1,4 +1,4 @@
-// Generated from Grammar.g4 by ANTLR 4.4
+// Generated from Grammar.g4 by ANTLR 4.5
 package grammar;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -17,264 +17,264 @@ public class GrammarBaseListener implements GrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAndExpr(@NotNull GrammarParser.AndExprContext ctx) { }
+	@Override public void enterProgram(GrammarParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAndExpr(@NotNull GrammarParser.AndExprContext ctx) { }
+	@Override public void exitProgram(GrammarParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterForStat(@NotNull GrammarParser.ForStatContext ctx) { }
+	@Override public void enterDecl(GrammarParser.DeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitForStat(@NotNull GrammarParser.ForStatContext ctx) { }
+	@Override public void exitDecl(GrammarParser.DeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssignStat(@NotNull GrammarParser.AssignStatContext ctx) { }
+	@Override public void enterAssignStat(GrammarParser.AssignStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssignStat(@NotNull GrammarParser.AssignStatContext ctx) { }
+	@Override public void exitAssignStat(GrammarParser.AssignStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIdTarget(@NotNull GrammarParser.IdTargetContext ctx) { }
+	@Override public void enterIfStat(GrammarParser.IfStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIdTarget(@NotNull GrammarParser.IdTargetContext ctx) { }
+	@Override public void exitIfStat(GrammarParser.IfStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIdExpr(@NotNull GrammarParser.IdExprContext ctx) { }
+	@Override public void enterWhileStat(GrammarParser.WhileStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIdExpr(@NotNull GrammarParser.IdExprContext ctx) { }
+	@Override public void exitWhileStat(GrammarParser.WhileStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrintStat(@NotNull GrammarParser.PrintStatContext ctx) { }
+	@Override public void enterForStat(GrammarParser.ForStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrintStat(@NotNull GrammarParser.PrintStatContext ctx) { }
+	@Override public void exitForStat(GrammarParser.ForStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVarExpr(@NotNull GrammarParser.VarExprContext ctx) { }
+	@Override public void enterBlockStat(GrammarParser.BlockStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVarExpr(@NotNull GrammarParser.VarExprContext ctx) { }
+	@Override public void exitBlockStat(GrammarParser.BlockStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterType(@NotNull GrammarParser.TypeContext ctx) { }
+	@Override public void enterPrintStat(GrammarParser.PrintStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitType(@NotNull GrammarParser.TypeContext ctx) { }
+	@Override public void exitPrintStat(GrammarParser.PrintStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOrExpr(@NotNull GrammarParser.OrExprContext ctx) { }
+	@Override public void enterBreakStat(GrammarParser.BreakStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOrExpr(@NotNull GrammarParser.OrExprContext ctx) { }
+	@Override public void exitBreakStat(GrammarParser.BreakStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCompExpr(@NotNull GrammarParser.CompExprContext ctx) { }
+	@Override public void enterContStat(GrammarParser.ContStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCompExpr(@NotNull GrammarParser.CompExprContext ctx) { }
+	@Override public void exitContStat(GrammarParser.ContStatContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWhileStat(@NotNull GrammarParser.WhileStatContext ctx) { }
+	@Override public void enterIdTarget(GrammarParser.IdTargetContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWhileStat(@NotNull GrammarParser.WhileStatContext ctx) { }
+	@Override public void exitIdTarget(GrammarParser.IdTargetContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProgram(@NotNull GrammarParser.ProgramContext ctx) { }
+	@Override public void enterArrayTarget(GrammarParser.ArrayTargetContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProgram(@NotNull GrammarParser.ProgramContext ctx) { }
+	@Override public void exitArrayTarget(GrammarParser.ArrayTargetContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIfStat(@NotNull GrammarParser.IfStatContext ctx) { }
+	@Override public void enterAndExpr(GrammarParser.AndExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIfStat(@NotNull GrammarParser.IfStatContext ctx) { }
+	@Override public void exitAndExpr(GrammarParser.AndExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArrayTarget(@NotNull GrammarParser.ArrayTargetContext ctx) { }
+	@Override public void enterIdExpr(GrammarParser.IdExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArrayTarget(@NotNull GrammarParser.ArrayTargetContext ctx) { }
+	@Override public void exitIdExpr(GrammarParser.IdExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBlockStat(@NotNull GrammarParser.BlockStatContext ctx) { }
+	@Override public void enterVarExpr(GrammarParser.VarExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBlockStat(@NotNull GrammarParser.BlockStatContext ctx) { }
+	@Override public void exitVarExpr(GrammarParser.VarExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterContStat(@NotNull GrammarParser.ContStatContext ctx) { }
+	@Override public void enterArithExpr(GrammarParser.ArithExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitContStat(@NotNull GrammarParser.ContStatContext ctx) { }
+	@Override public void exitArithExpr(GrammarParser.ArithExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArithExpr(@NotNull GrammarParser.ArithExprContext ctx) { }
+	@Override public void enterCompExpr(GrammarParser.CompExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArithExpr(@NotNull GrammarParser.ArithExprContext ctx) { }
+	@Override public void exitCompExpr(GrammarParser.CompExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBreakStat(@NotNull GrammarParser.BreakStatContext ctx) { }
+	@Override public void enterOrExpr(GrammarParser.OrExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBreakStat(@NotNull GrammarParser.BreakStatContext ctx) { }
+	@Override public void exitOrExpr(GrammarParser.OrExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNotExpr(@NotNull GrammarParser.NotExprContext ctx) { }
+	@Override public void enterNotExpr(GrammarParser.NotExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNotExpr(@NotNull GrammarParser.NotExprContext ctx) { }
+	@Override public void exitNotExpr(GrammarParser.NotExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDecl(@NotNull GrammarParser.DeclContext ctx) { }
+	@Override public void enterType(GrammarParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDecl(@NotNull GrammarParser.DeclContext ctx) { }
+	@Override public void exitType(GrammarParser.TypeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEveryRule(@NotNull ParserRuleContext ctx) { }
+	@Override public void enterEveryRule(ParserRuleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitEveryRule(@NotNull ParserRuleContext ctx) { }
+	@Override public void exitEveryRule(ParserRuleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void visitTerminal(@NotNull TerminalNode node) { }
+	@Override public void visitTerminal(TerminalNode node) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void visitErrorNode(@NotNull ErrorNode node) { }
+	@Override public void visitErrorNode(ErrorNode node) { }
 }
