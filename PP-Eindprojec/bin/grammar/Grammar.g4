@@ -13,12 +13,13 @@ stat: type ID (ASSIGN expr)? SEMI         #decl
     | LCURLY stat* RCURLY                 #blockStat
     | PRINT LPAR STRING (COMMA ID)* RPAR SEMI #printStat
     | BREAK SEMI                          #breakStat
+    | expr SEMI                          #breakStat
     | CONTINUE SEMI                       #contStat
     ;
 
 target
     : ID              #idTarget
-    | ID LSQ expr RSQ #arrayTarget
+    //| ID LSQ expr RSQ #arrayTarget
     ;
 
 expr: expr (PLUS | MINUS | TIMES | DIVIDE) expr	#arithExpr
@@ -26,12 +27,20 @@ expr: expr (PLUS | MINUS | TIMES | DIVIDE) expr	#arithExpr
 	| expr OR expr								#orExpr
 	| expr (GT | GE | LT | LE | EQ | NE ) expr	#compExpr
 	| (NUM | TRUE | FALSE)						#varExpr
+	| expr (DECR | INCR)						#postAdd
+	| (DECR | INCR)	expr 						#preAdd
 	| ID										#idExpr
 	| NOT expr									#notExpr
 	;
 type: INT | BOOL;
 
 DOT: '.';
+TIMES: '*';
+INCR: '++';
+DECR: '--';
+DIVIDE: '/';
+GE: '>=';
+LE: '<=';
 SEMI: ';';
 COMMA: ',';
 LSQ: '[';

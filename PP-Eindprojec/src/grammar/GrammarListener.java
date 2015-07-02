@@ -139,18 +139,6 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitIdTarget(GrammarParser.IdTargetContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code arrayTarget}
-	 * labeled alternative in {@link GrammarParser#target}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayTarget(GrammarParser.ArrayTargetContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code arrayTarget}
-	 * labeled alternative in {@link GrammarParser#target}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayTarget(GrammarParser.ArrayTargetContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code andExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -186,6 +174,30 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVarExpr(GrammarParser.VarExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code preAdd}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPreAdd(GrammarParser.PreAddContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code preAdd}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPreAdd(GrammarParser.PreAddContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code postAdd}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPostAdd(GrammarParser.PostAddContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code postAdd}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPostAdd(GrammarParser.PostAddContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code arithExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
