@@ -61,7 +61,7 @@ public class Checker extends GrammarBaseListener {
 	public void exitTernaryExpr(TernaryExprContext ctx) {
 		typeCheck(ctx.expr(0), Type.BOOL);
 		typeCheck(ctx.expr(1), ctx.expr(2));
-		result.setOffset(ctx, result.getOffset(ctx.expr(1)));
+		result.setType(ctx, result.getType(ctx.expr(1)));
 		
 	}
 

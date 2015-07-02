@@ -8,6 +8,8 @@ import static program.Opcode.Pop;
 import static program.Opcode.Push;
 import static program.Opcode.Store;
 import static program.Opcode.Write;
+import static program.Opcode.Jump;
+import static program.Opcode.Branch;
 import static program.Operator.Op.Add;
 import static program.Operator.Op.Div;
 import static program.Operator.Op.Mul;
@@ -45,7 +47,7 @@ import program.Operator.Op;
 import program.Program;
 import program.Reg;
 import program.Reg.Register;
-
+import program.Target;
 
 /** Class to generate ILOC code for Simple Pascal. */
 public class Generator extends GrammarBaseVisitor<MemAddr> {
@@ -78,7 +80,7 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 	@Override
 	public MemAddr visitDecl(DeclContext ctx) {
 		MemAddr mem = getMem(ctx.ID());
-		if(ctx.expr() == null) {
+		if (ctx.expr() == null) {
 			append(Store, zero, mem);
 		} else {
 			visit(ctx.expr());
@@ -90,20 +92,63 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 
 	@Override
 	public MemAddr visitIfStat(IfStatContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitIfStat(ctx);
+		visit(ctx.expr());
+		prog.removeLast();
+		Target elseTarget = new Target(-1);
+		append(Branch, regA, elseTarget);
+		Target endTarget = new Target(-1);
+		if (ctx.stat(1) != null) {
+			visit(ctx.stat(1));
+			append(Jump, endTarget);
+		}
+		elseTarget.setIndex(prog.size());
+		visit(ctx.stat(0));
+		if (ctx.stat(1) != null) {
+			endTarget.setIndex(prog.size());
+		}
+		return null;
 	}
 
 	@Override
 	public MemAddr visitWhileStat(WhileStatContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitWhileStat(ctx);
+		Target cond = new Target(prog.size());
+		Target end = new Target(-1);
+		Target stat = new Target(-1);
+		visit(ctx.expr());
+		prog.removeLast();
+		append(Branch, regA, stat);
+		append(Jump, end);
+		stat.setIndex(prog.size());
+		visit(ctx.stat());
+		append(Jump, cond);
+		end.setIndex(prog.size());
+		return null;
 	}
 
 	@Override
 	public MemAddr visitForStat(ForStatContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitForStat(ctx);
+		MemAddr mem = getMem(ctx.ID(0));
+		visit(ctx.expr(0));
+		prog.removeLast();
+		append(Store, regA, mem);
+		append(Push, regA);
+		Target cond = new Target(prog.size());
+		Target end = new Target(-1);
+		Target stat = new Target(-1);
+		visit(ctx.expr(1));
+		prog.removeLast();
+		append(Branch, regA, stat);
+		append(Jump, end);
+		stat.setIndex(prog.size());
+		visit(ctx.stat());
+		mem = getMem(ctx.ID(1));
+		visit(ctx.expr(2));
+		prog.removeLast();
+		append(Store, regA, mem);
+		append(Push, regA);
+		append(Jump, cond);
+		end.setIndex(prog.size());
+		return null;
 	}
 
 	@Override
@@ -143,12 +188,14 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 		append(Push, regA);
 		return null;
 	}
+
 	private MemAddr getMem(ParseTree tree) {
 		return new MemAddr(result.getOffset(tree));
 	}
+
 	@Override
 	public MemAddr visitVarExpr(VarExprContext ctx) {
-		if(ctx.NUM() != null) {
+		if (ctx.NUM() != null) {
 			append(Const, new Int(ctx.getText()), regA);
 			append(Push, regA);
 		} else if (ctx.TRUE() != null) {
@@ -182,8 +229,18 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 
 	@Override
 	public MemAddr visitTernaryExpr(TernaryExprContext ctx) {
-		// TODO Auto-generated method stub
-		return super.visitTernaryExpr(ctx);
+		visit(ctx.expr(0));
+		prog.removeLast();
+		Target elseTarget = new Target(-1);
+		append(Branch, regA, elseTarget);
+		visit(ctx.expr(2));
+		prog.removeLast();
+		Target endTarget = new Target(-1);
+		append(Jump, endTarget);
+		elseTarget.setIndex(prog.size());
+		visit(ctx.expr(1));
+		endTarget.setIndex(prog.size() - 1);// the push command in ctx.expr(2)
+		return null;
 	}
 
 	@Override
@@ -192,7 +249,7 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 		append(Load, mem, regA);
 		append(Const, new Int(1), regB);
 		Op o = ctx.DECR() == null ? Add : Sub;
-		append(Compute, new Operator(o), regA,regB,regA);
+		append(Compute, new Operator(o), regA, regB, regA);
 		append(Store, regA, mem);
 		append(Push, regA);
 		return null;
@@ -204,7 +261,7 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 		append(Load, mem, regA);
 		append(Const, new Int(1), regB);
 		Op o = ctx.DECR() == null ? Add : Sub;
-		append(Compute, new Operator(o), regA,regB,regB);
+		append(Compute, new Operator(o), regA, regB, regB);
 		append(Store, regB, mem);
 		append(Push, regA);
 		return null;
@@ -212,20 +269,20 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 
 	@Override
 	public MemAddr visitArithExpr(ArithExprContext ctx) {
-		visit(ctx.expr(0));
 		visit(ctx.expr(1));
+		visit(ctx.expr(0));
 		prog.removeLast();
 		append(Pop, regB);
-		if(ctx.PLUS() != null) {
+		if (ctx.PLUS() != null) {
 			append(Compute, new Operator(Add), regA, regB, regA);
-		} else if(ctx.MINUS() != null) {
+		} else if (ctx.MINUS() != null) {
 			append(Compute, new Operator(Sub), regA, regB, regA);
-		} else if(ctx.TIMES() != null) {
+		} else if (ctx.TIMES() != null) {
 			append(Compute, new Operator(Mul), regA, regB, regA);
-		} else if(ctx.DIVIDE() != null) {
+		} else if (ctx.DIVIDE() != null) {
 			append(Compute, new Operator(Div), regA, regB, regA);
 		}
-		append(Push,regA);
+		append(Push, regA);
 		return null;
 	}
 
@@ -235,7 +292,21 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 		visit(ctx.expr(1));
 		prog.removeLast();
 		append(Pop, regB);
-		append(Compute, new Operator(Op.Equal), regA, regB, regA);
+		Op op = null;
+		if (ctx.EQ() != null) {
+			op = Op.Equal;
+		} else if (ctx.NE() != null) {
+			op = Op.NEq;
+		} else if (ctx.GT() != null) {
+			op = Op.Gt;
+		} else if (ctx.GE() != null) {
+			op = Op.GtE;
+		} else if (ctx.LT() != null) {
+			op = Op.Lt;
+		} else if (ctx.LE() != null) {
+			op = Op.LtE;
+		}
+		append(Compute, new Operator(op), regB, regA, regA);
 		append(Push, regA);
 		return null;
 	}
@@ -259,8 +330,9 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 		append(Push, regA);
 		return null;
 	}
+
 	private Instr append(Opcode o, Operand... os) {
-		Instr i  = new Instr(o, os);
+		Instr i = new Instr(o, os);
 		prog.addInstr(i);
 		return i;
 	}

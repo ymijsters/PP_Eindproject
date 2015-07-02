@@ -1,0 +1,15 @@
+println(false ? 9 : 0);
+println(true ? 0 : 9);
+boolean tru = (3-3) == 0;
+boolean falze = (3*4) > 12;
+int out = 1;
+if(tru) {
+	out = 0;
+}
+println(out);
+if(falze) {
+	out = 1;
+} else {
+	out = 2;
+}
+println(out);
