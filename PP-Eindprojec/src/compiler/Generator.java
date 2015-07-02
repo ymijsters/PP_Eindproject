@@ -1,34 +1,39 @@
 package compiler;
 
-import static program.Opcode.*;
-import static program.Operator.Op.*;
+import static program.Opcode.Compute;
+import static program.Opcode.Const;
+import static program.Opcode.EndProg;
+import static program.Opcode.Load;
+import static program.Opcode.Pop;
+import static program.Opcode.Push;
+import static program.Opcode.Store;
+import static program.Opcode.Write;
+import static program.Operator.Op.Add;
+import static program.Operator.Op.Div;
+import static program.Operator.Op.Mul;
+import static program.Operator.Op.Sub;
 import grammar.GrammarBaseVisitor;
 import grammar.GrammarParser.AndExprContext;
 import grammar.GrammarParser.ArithExprContext;
 import grammar.GrammarParser.AssignExprContext;
-import grammar.GrammarParser.BlockStatContext;
 import grammar.GrammarParser.CompExprContext;
 import grammar.GrammarParser.DeclContext;
 import grammar.GrammarParser.ExprStatContext;
 import grammar.GrammarParser.ForStatContext;
 import grammar.GrammarParser.IdExprContext;
-import grammar.GrammarParser.IdTargetContext;
 import grammar.GrammarParser.IfStatContext;
 import grammar.GrammarParser.NegExprContext;
 import grammar.GrammarParser.NotExprContext;
 import grammar.GrammarParser.OrExprContext;
-import grammar.GrammarParser.ParExprContext;
-import grammar.GrammarParser.PostAddContext;
-import grammar.GrammarParser.PreAddContext;
+import grammar.GrammarParser.PostEditContext;
+import grammar.GrammarParser.PreEditContext;
 import grammar.GrammarParser.PrintStatContext;
 import grammar.GrammarParser.ProgramContext;
-import grammar.GrammarParser.TypeContext;
+import grammar.GrammarParser.TernaryExprContext;
 import grammar.GrammarParser.VarExprContext;
 import grammar.GrammarParser.WhileStatContext;
 
 import org.antlr.v4.runtime.tree.ParseTree;
-
-import com.sun.org.glassfish.external.probe.provider.PluginPoint;
 
 import program.Instr;
 import program.Int;
@@ -36,6 +41,7 @@ import program.MemAddr;
 import program.Opcode;
 import program.Operand;
 import program.Operator;
+import program.Operator.Op;
 import program.Program;
 import program.Reg;
 import program.Reg.Register;
@@ -52,7 +58,6 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 	private final Reg regB = new Reg(Register.RegB);
 	private final Reg regC = new Reg(Register.RegC);
 	private final Reg regD = new Reg(Register.RegD);
-	private final Reg regE = new Reg(Register.RegE);
 	private final int IO = 0x1000000;
 	private final Operand ioAddr = new MemAddr(IO);
 
@@ -102,12 +107,6 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 	}
 
 	@Override
-	public MemAddr visitBlockStat(BlockStatContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitBlockStat(ctx);
-	}
-
-	@Override
 	public MemAddr visitPrintStat(PrintStatContext ctx) {
 		visit(ctx.expr());
 		prog.removeLast();
@@ -127,21 +126,14 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 	}
 
 	@Override
-	public MemAddr visitIdTarget(IdTargetContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitIdTarget(ctx);
-	}
-
-	@Override
-	public MemAddr visitParExpr(ParExprContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitParExpr(ctx);
-	}
-
-	@Override
 	public MemAddr visitAndExpr(AndExprContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitAndExpr(ctx);
+		visit(ctx.expr(0));
+		visit(ctx.expr(1));
+		prog.removeLast();
+		append(Pop, regB);
+		append(Compute, new Operator(Op.And), regA, regB, regA);
+		append(Push, regA);
+		return null;
 	}
 
 	@Override
@@ -160,7 +152,7 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 			append(Const, new Int(ctx.getText()), regA);
 			append(Push, regA);
 		} else if (ctx.TRUE() != null) {
-			append(Const, new Int(1), regA);
+			append(Const, new Int(0x1), regA);
 			append(Push, regA);
 		} else {
 			append(Const, new Int(0), regA);
@@ -171,8 +163,11 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 
 	@Override
 	public MemAddr visitNegExpr(NegExprContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitNegExpr(ctx);
+		visit(ctx.expr());
+		prog.removeLast();
+		append(Compute, new Operator(Sub), zero, regA, regA);
+		append(Push, regA);
+		return null;
 	}
 
 	@Override
@@ -186,15 +181,33 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 	}
 
 	@Override
-	public MemAddr visitPreAdd(PreAddContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitPreAdd(ctx);
+	public MemAddr visitTernaryExpr(TernaryExprContext ctx) {
+		// TODO Auto-generated method stub
+		return super.visitTernaryExpr(ctx);
 	}
 
 	@Override
-	public MemAddr visitPostAdd(PostAddContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitPostAdd(ctx);
+	public MemAddr visitPreEdit(PreEditContext ctx) {
+		MemAddr mem = getMem(ctx.target());
+		append(Load, mem, regA);
+		append(Const, new Int(1), regB);
+		Op o = ctx.DECR() == null ? Add : Sub;
+		append(Compute, new Operator(o), regA,regB,regA);
+		append(Store, regA, mem);
+		append(Push, regA);
+		return null;
+	}
+
+	@Override
+	public MemAddr visitPostEdit(PostEditContext ctx) {
+		MemAddr mem = getMem(ctx.target());
+		append(Load, mem, regA);
+		append(Const, new Int(1), regB);
+		Op o = ctx.DECR() == null ? Add : Sub;
+		append(Compute, new Operator(o), regA,regB,regB);
+		append(Store, regB, mem);
+		append(Push, regA);
+		return null;
 	}
 
 	@Override
@@ -218,26 +231,33 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 
 	@Override
 	public MemAddr visitCompExpr(CompExprContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitCompExpr(ctx);
+		visit(ctx.expr(0));
+		visit(ctx.expr(1));
+		prog.removeLast();
+		append(Pop, regB);
+		append(Compute, new Operator(Op.Equal), regA, regB, regA);
+		append(Push, regA);
+		return null;
 	}
 
 	@Override
 	public MemAddr visitOrExpr(OrExprContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitOrExpr(ctx);
+		visit(ctx.expr(0));
+		visit(ctx.expr(1));
+		prog.removeLast();
+		append(Pop, regB);
+		append(Compute, new Operator(Op.Or), regA, regB, regA);
+		append(Push, regA);
+		return null;
 	}
 
 	@Override
 	public MemAddr visitNotExpr(NotExprContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitNotExpr(ctx);
-	}
-
-	@Override
-	public MemAddr visitType(TypeContext ctx) {
-		System.err.println(ctx.getText());//TODO Auto-generated method stub
-		return super.visitType(ctx);
+		visit(ctx.expr());
+		prog.removeLast();
+		append(Compute, new Operator(Op.Equal), regA, zero, regA);
+		append(Push, regA);
+		return null;
 	}
 	private Instr append(Opcode o, Operand... os) {
 		Instr i  = new Instr(o, os);

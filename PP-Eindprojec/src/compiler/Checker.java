@@ -14,8 +14,9 @@ import grammar.GrammarParser.NegExprContext;
 import grammar.GrammarParser.NotExprContext;
 import grammar.GrammarParser.OrExprContext;
 import grammar.GrammarParser.ParExprContext;
-import grammar.GrammarParser.PostAddContext;
-import grammar.GrammarParser.PreAddContext;
+import grammar.GrammarParser.PostEditContext;
+import grammar.GrammarParser.PreEditContext;
+import grammar.GrammarParser.TernaryExprContext;
 import grammar.GrammarParser.TypeContext;
 import grammar.GrammarParser.VarExprContext;
 import grammar.GrammarParser.WhileStatContext;
@@ -56,21 +57,29 @@ public class Checker extends GrammarBaseListener {
 		errors.add(node.getText());
 	}
 
+	@Override
+	public void exitTernaryExpr(TernaryExprContext ctx) {
+		typeCheck(ctx.expr(0), Type.BOOL);
+		typeCheck(ctx.expr(1), ctx.expr(2));
+		result.setOffset(ctx, result.getOffset(ctx.expr(1)));
+		
+	}
+
 	/** Indicates if any errors were encountered in this tree listener. */
 	public boolean hasErrors() {
 		return !getErrors().isEmpty();
 	}
 
 	@Override
-	public void exitPreAdd(PreAddContext ctx) {
-		typeCheck(ctx.expr(), Type.INT);
+	public void exitPreEdit(PreEditContext ctx) {
+		typeCheck(ctx.target(), Type.INT);
 		result.setType(ctx, Type.INT);
 
 	}
 
 	@Override
-	public void exitPostAdd(PostAddContext ctx) {
-		typeCheck(ctx.expr(), Type.INT);
+	public void exitPostEdit(PostEditContext ctx) {
+		typeCheck(ctx.target(), Type.INT);
 		result.setType(ctx, Type.INT);
 	}
 

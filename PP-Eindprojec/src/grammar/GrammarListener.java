@@ -115,18 +115,6 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitIdTarget(GrammarParser.IdTargetContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code parExpr}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterParExpr(GrammarParser.ParExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code parExpr}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitParExpr(GrammarParser.ParExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code andExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -163,17 +151,17 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitVarExpr(GrammarParser.VarExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code negExpr}
+	 * Enter a parse tree produced by the {@code ternaryExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void enterNegExpr(GrammarParser.NegExprContext ctx);
+	void enterTernaryExpr(GrammarParser.TernaryExprContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code negExpr}
+	 * Exit a parse tree produced by the {@code ternaryExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitNegExpr(GrammarParser.NegExprContext ctx);
+	void exitTernaryExpr(GrammarParser.TernaryExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code assignExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -187,41 +175,17 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitAssignExpr(GrammarParser.AssignExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code preAdd}
+	 * Enter a parse tree produced by the {@code orExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void enterPreAdd(GrammarParser.PreAddContext ctx);
+	void enterOrExpr(GrammarParser.OrExprContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code preAdd}
+	 * Exit a parse tree produced by the {@code orExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitPreAdd(GrammarParser.PreAddContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code postAdd}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterPostAdd(GrammarParser.PostAddContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code postAdd}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitPostAdd(GrammarParser.PostAddContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code arithExpr}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterArithExpr(GrammarParser.ArithExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code arithExpr}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitArithExpr(GrammarParser.ArithExprContext ctx);
+	void exitOrExpr(GrammarParser.OrExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code compExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -235,17 +199,65 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitCompExpr(GrammarParser.CompExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code orExpr}
+	 * Enter a parse tree produced by the {@code parExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void enterOrExpr(GrammarParser.OrExprContext ctx);
+	void enterParExpr(GrammarParser.ParExprContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code orExpr}
+	 * Exit a parse tree produced by the {@code parExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitOrExpr(GrammarParser.OrExprContext ctx);
+	void exitParExpr(GrammarParser.ParExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code postEdit}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPostEdit(GrammarParser.PostEditContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code postEdit}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPostEdit(GrammarParser.PostEditContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code preEdit}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPreEdit(GrammarParser.PreEditContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code preEdit}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPreEdit(GrammarParser.PreEditContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code negExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterNegExpr(GrammarParser.NegExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code negExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNegExpr(GrammarParser.NegExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code arithExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterArithExpr(GrammarParser.ArithExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arithExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitArithExpr(GrammarParser.ArithExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code notExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

@@ -26,9 +26,10 @@ expr: expr (PLUS | MINUS | TIMES | DIVIDE) expr	#arithExpr
 	| expr OR expr								#orExpr
 	| target ASSIGN expr						#assignExpr
 	| expr (GT | GE | LT | LE | EQ | NE ) expr	#compExpr
+	| expr TIF expr TELSE expr					#ternaryExpr
 	| (NUM | TRUE | FALSE)						#varExpr
-	| expr (DECR | INCR)						#postAdd
-	| (DECR | INCR)	expr 						#preAdd
+	| target (DECR | INCR)						#postEdit
+	| (DECR | INCR)	target 						#preEdit
 	| ID										#idExpr
 	| NOT expr									#notExpr
 	| LPAR expr RPAR							#parExpr
@@ -59,6 +60,8 @@ LT: '<';
 GT: '>';
 EQ: '==';
 NE: '!=';
+TELSE: ':';
+TIF: '?';
 LCURLY: '{';
 RCURLY: '}';
 LPAR: '(';
