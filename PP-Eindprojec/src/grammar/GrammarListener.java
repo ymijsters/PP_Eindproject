@@ -103,29 +103,17 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitPrintStat(GrammarParser.PrintStatContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code breakStat}
+	 * Enter a parse tree produced by the {@code exprStat}
 	 * labeled alternative in {@link GrammarParser#stat}.
 	 * @param ctx the parse tree
 	 */
-	void enterBreakStat(GrammarParser.BreakStatContext ctx);
+	void enterExprStat(GrammarParser.ExprStatContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code breakStat}
+	 * Exit a parse tree produced by the {@code exprStat}
 	 * labeled alternative in {@link GrammarParser#stat}.
 	 * @param ctx the parse tree
 	 */
-	void exitBreakStat(GrammarParser.BreakStatContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code contStat}
-	 * labeled alternative in {@link GrammarParser#stat}.
-	 * @param ctx the parse tree
-	 */
-	void enterContStat(GrammarParser.ContStatContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code contStat}
-	 * labeled alternative in {@link GrammarParser#stat}.
-	 * @param ctx the parse tree
-	 */
-	void exitContStat(GrammarParser.ContStatContext ctx);
+	void exitExprStat(GrammarParser.ExprStatContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code idTarget}
 	 * labeled alternative in {@link GrammarParser#target}.
@@ -138,6 +126,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIdTarget(GrammarParser.IdTargetContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code parExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterParExpr(GrammarParser.ParExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code parExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitParExpr(GrammarParser.ParExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code andExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -174,6 +174,30 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVarExpr(GrammarParser.VarExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code negExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterNegExpr(GrammarParser.NegExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code negExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNegExpr(GrammarParser.NegExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code assignExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignExpr(GrammarParser.AssignExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code assignExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignExpr(GrammarParser.AssignExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code preAdd}
 	 * labeled alternative in {@link GrammarParser#expr}.

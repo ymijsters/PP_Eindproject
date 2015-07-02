@@ -39,7 +39,7 @@ abstract public class Type {
 
 		@Override
 		public int size() {
-			return 4;
+			return 1;
 		}
 
 		@Override

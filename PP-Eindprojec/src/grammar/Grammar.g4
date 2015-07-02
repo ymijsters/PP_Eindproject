@@ -12,9 +12,9 @@ stat: type ID (ASSIGN expr)? SEMI         #decl
                ID ASSIGN expr RPAR stat   #forStat 
     | LCURLY stat* RCURLY                 #blockStat
     | PRINT LPAR STRING (COMMA ID)* RPAR SEMI #printStat
-    | BREAK SEMI                          #breakStat
-    | expr SEMI                          #breakStat
-    | CONTINUE SEMI                       #contStat
+    //| BREAK SEMI                          #breakStat
+    | expr SEMI                          #exprStat
+    //| CONTINUE SEMI                       #contStat
     ;
 
 target
@@ -25,12 +25,15 @@ target
 expr: expr (PLUS | MINUS | TIMES | DIVIDE) expr	#arithExpr
 	| expr AND expr								#andExpr
 	| expr OR expr								#orExpr
+	| target ASSIGN expr						#assignExpr
 	| expr (GT | GE | LT | LE | EQ | NE ) expr	#compExpr
 	| (NUM | TRUE | FALSE)						#varExpr
 	| expr (DECR | INCR)						#postAdd
 	| (DECR | INCR)	expr 						#preAdd
 	| ID										#idExpr
 	| NOT expr									#notExpr
+	| LPAR expr RPAR							#parExpr
+	| MINUS expr								#negExpr
 	;
 type: INT | BOOL;
 

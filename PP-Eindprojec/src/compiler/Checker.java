@@ -3,22 +3,20 @@ package compiler;
 import grammar.GrammarBaseListener;
 import grammar.GrammarParser.AndExprContext;
 import grammar.GrammarParser.ArithExprContext;
+import grammar.GrammarParser.AssignExprContext;
 import grammar.GrammarParser.AssignStatContext;
-import grammar.GrammarParser.BlockStatContext;
-import grammar.GrammarParser.BreakStatContext;
 import grammar.GrammarParser.CompExprContext;
-import grammar.GrammarParser.ContStatContext;
 import grammar.GrammarParser.DeclContext;
 import grammar.GrammarParser.ForStatContext;
 import grammar.GrammarParser.IdExprContext;
 import grammar.GrammarParser.IdTargetContext;
 import grammar.GrammarParser.IfStatContext;
+import grammar.GrammarParser.NegExprContext;
 import grammar.GrammarParser.NotExprContext;
 import grammar.GrammarParser.OrExprContext;
+import grammar.GrammarParser.ParExprContext;
 import grammar.GrammarParser.PostAddContext;
 import grammar.GrammarParser.PreAddContext;
-import grammar.GrammarParser.PrintStatContext;
-import grammar.GrammarParser.ProgramContext;
 import grammar.GrammarParser.TypeContext;
 import grammar.GrammarParser.VarExprContext;
 import grammar.GrammarParser.WhileStatContext;
@@ -27,27 +25,36 @@ import grammar.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RuleContext;
+import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeProperty;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class Checker extends GrammarBaseListener {
 	private Result result;
 	private Scope scope;
 	private List<String> errors;
-	private ParseTreeProperty<Type> types;
 
 	public Result check(ParseTree tree) throws ParseException {
 		this.scope = new Scope();
 		this.result = new Result();
 		this.errors = new ArrayList<>();
-		this.types = new ParseTreeProperty<Type>();
 		new ParseTreeWalker().walk(this, tree);
 		if (hasErrors()) {
 			throw new ParseException(getErrors());
 		}
 		return this.result;
+	}
+	
+	@Override
+	public void exitNegExpr(NegExprContext ctx) {
+		typeCheck(ctx.expr(), Type.INT);
+		result.setType(ctx, Type.INT);
+	}
+
+	@Override
+	public void visitErrorNode(ErrorNode node) {
+		errors.add(node.getText());
 	}
 
 	/** Indicates if any errors were encountered in this tree listener. */
@@ -57,14 +64,15 @@ public class Checker extends GrammarBaseListener {
 
 	@Override
 	public void exitPreAdd(PreAddContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitPreAdd(ctx);
+		typeCheck(ctx.expr(), Type.INT);
+		result.setType(ctx, Type.INT);
+
 	}
 
 	@Override
 	public void exitPostAdd(PostAddContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitPostAdd(ctx);
+		typeCheck(ctx.expr(), Type.INT);
+		result.setType(ctx, Type.INT);
 	}
 
 	/** Returns the list of errors collected in this tree listener. */
@@ -73,148 +81,144 @@ public class Checker extends GrammarBaseListener {
 	}
 
 	@Override
-	public void exitProgram(ProgramContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitProgram(ctx);
-	}
-
-	
-	@Override
 	public void exitDecl(DeclContext ctx) {
 		String id = ctx.ID().getText();
 		if (scope.contains(id)) {
 			errors.add(ctx.toString() + " : " + id + " already declared");
 		} else {
-			Type type = getType(ctx.type());
-			types.put(ctx, type);
+			Type type = result.getType(ctx.type());
 			scope.put(id, type);
 			result.setType(ctx, type);
-			result.setOffset(ctx, scope.offset(id));
-			
+			result.setOffset(ctx.ID(), scope.offset(id));
+
 			if (ctx.expr() != null) {
-				if(type != result.getType(ctx.expr())) {
-					errors.add(ctx.expr().getText() + " doesn't have type " + type);
-				}
+				typeCheck(ctx.expr(), type);
 			}
 		}
 	}
 
-	private Type getType(TypeContext tc) {
-		switch (tc.getText()) {
-		case "int":
-			return Type.INT;
-		case "boolean":
-			return Type.BOOL;
+	public void typeCheck(RuleContext ctx, Type expected) {
+		if (expected != result.getType(ctx)) {
+			errors.add(ctx.getText() + " doesn't have type " + expected);
 		}
-		return null;
+	}
+
+	public void typeCheck(RuleContext ctx, RuleContext expected) {
+		typeCheck(ctx, result.getType(expected));
 	}
 
 	@Override
 	public void exitAssignStat(AssignStatContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitAssignStat(ctx);
+		Type lType = result.getType(ctx.target());
+		typeCheck(ctx.expr(), lType);
+	}
+
+	@Override
+	public void exitAssignExpr(AssignExprContext ctx) {
+		Type type = result.getType(ctx.target());
+		typeCheck(ctx.expr(), type);
+		result.setType(ctx, type);
 	}
 
 	@Override
 	public void exitIfStat(IfStatContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitIfStat(ctx);
+		typeCheck(ctx.expr(), Type.BOOL);
 	}
 
 	@Override
 	public void exitWhileStat(WhileStatContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitWhileStat(ctx);
+		typeCheck(ctx.expr(), Type.BOOL);
 	}
 
 	@Override
 	public void exitForStat(ForStatContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitForStat(ctx);
+		Type t1 = scope.type(ctx.ID(0).getText());
+		typeCheck(ctx.expr(0), t1);
+		typeCheck(ctx.expr(1), Type.BOOL);
+		Type t2 = scope.type(ctx.ID(1).getText());
+		typeCheck(ctx.expr(2), t2);
+		result.setOffset(ctx.ID(0), scope.offset(ctx.ID(0).getText()));
+		result.setOffset(ctx.ID(1), scope.offset(ctx.ID(1).getText()));
 	}
 
 	@Override
-	public void exitBlockStat(BlockStatContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitBlockStat(ctx);
-	}
-
-	@Override
-	public void exitPrintStat(PrintStatContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitPrintStat(ctx);
-	}
-
-	@Override
-	public void exitBreakStat(BreakStatContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitBreakStat(ctx);
-	}
-
-	@Override
-	public void exitContStat(ContStatContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitContStat(ctx);
+	public void exitParExpr(ParExprContext ctx) {
+		result.setType(ctx, result.getType(ctx.expr()));
 	}
 
 	@Override
 	public void exitIdTarget(IdTargetContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitIdTarget(ctx);
+		Type t = scope.type(ctx.getText());
+		if (t == null) {
+			errors.add(ctx.getText() + " not defined");
+		} else {
+			result.setType(ctx, t);
+		}
+		result.setOffset(ctx, scope.offset(ctx.getText()));
 	}
 
 	@Override
 	public void exitAndExpr(AndExprContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitAndExpr(ctx);
+		typeCheck(ctx.expr(0), Type.BOOL);
+		typeCheck(ctx.expr(1), Type.BOOL);
+		result.setType(ctx, Type.BOOL);
 	}
 
 	@Override
 	public void exitIdExpr(IdExprContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitIdExpr(ctx);
+		Type t = scope.type(ctx.getText());
+		if (t == null) {
+			errors.add(ctx.getText() + " not defined");
+		} else {
+			result.setType(ctx, t);
+		}
+		result.setOffset(ctx, scope.offset(ctx.getText()));
 	}
 
 	@Override
 	public void exitVarExpr(VarExprContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitVarExpr(ctx);
+		result.setType(ctx, ctx.NUM() == null ? Type.BOOL : Type.INT);
 	}
 
 	@Override
 	public void exitArithExpr(ArithExprContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitArithExpr(ctx);
+		typeCheck(ctx.expr(0), Type.INT);
+		typeCheck(ctx.expr(1), Type.INT);
+		result.setType(ctx, Type.INT);
 	}
 
 	@Override
 	public void exitCompExpr(CompExprContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitCompExpr(ctx);
+		if(ctx.EQ() == ctx.NE()) {//only when both are null
+			typeCheck(ctx.expr(0), Type.INT);
+			typeCheck(ctx.expr(1), Type.INT);
+		} else {
+			typeCheck(ctx.expr(0), ctx.expr(1));
+		}
+		result.setType(ctx, Type.BOOL);
 	}
 
 	@Override
 	public void exitOrExpr(OrExprContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitOrExpr(ctx);
+		typeCheck(ctx.expr(0), Type.BOOL);
+		typeCheck(ctx.expr(1), Type.BOOL);
+		result.setType(ctx, Type.BOOL);
 	}
 
 	@Override
 	public void exitNotExpr(NotExprContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitNotExpr(ctx);
+		typeCheck(ctx.expr(), Type.BOOL);
+		result.setType(ctx, Type.BOOL);
 	}
 
 	@Override
 	public void exitType(TypeContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitType(ctx);
+		Type t = null;
+		if (ctx.BOOL() != null) {
+			t = Type.BOOL;
+		} else if (ctx.INT() != null) {
+			t = Type.INT;
+		}
+		result.setType(ctx, t);
 	}
-
-	@Override
-	public void exitEveryRule(ParserRuleContext ctx) {
-		// TODO Auto-generated method stub
-		super.exitEveryRule(ctx);
-	}
-
 }
