@@ -1,5 +1,6 @@
 // Generated from Grammar.g4 by ANTLR 4.5
 package grammar;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -29,18 +30,6 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDecl(GrammarParser.DeclContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code assignStat}
-	 * labeled alternative in {@link GrammarParser#stat}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssignStat(GrammarParser.AssignStatContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code assignStat}
-	 * labeled alternative in {@link GrammarParser#stat}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssignStat(GrammarParser.AssignStatContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ifStat}
 	 * labeled alternative in {@link GrammarParser#stat}.

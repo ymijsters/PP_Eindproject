@@ -4,14 +4,13 @@ grammar Grammar;
 program: stat+ EOF;
 
 stat: type ID (ASSIGN expr)? SEMI         #decl
-    | target ASSIGN expr SEMI             #assignStat
     | IF LPAR expr RPAR stat (ELSE stat)? #ifStat 
     | WHILE LPAR expr RPAR stat           #whileStat 
     | FOR LPAR ID ASSIGN expr SEMI
                expr SEMI
                ID ASSIGN expr RPAR stat   #forStat 
     | LCURLY stat* RCURLY                 #blockStat
-    | PRINT LPAR STRING (COMMA ID)* RPAR SEMI #printStat
+    | PRINT LPAR expr RPAR SEMI #printStat
     //| BREAK SEMI                          #breakStat
     | expr SEMI                          #exprStat
     //| CONTINUE SEMI                       #contStat
@@ -66,7 +65,7 @@ LPAR: '(';
 RPAR: ')';
 
 IN: 'in';
-PRINT: 'printf';
+PRINT: 'println';
 BOOL: 'boolean';
 FOR: 'for';
 INT: 'int';

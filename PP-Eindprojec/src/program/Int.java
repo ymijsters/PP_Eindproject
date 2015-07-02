@@ -6,6 +6,9 @@ public class Int extends Operand {
 		super(Type.Int);
 		value = v;
 	}
+	public Int(String text) {
+		this(Integer.parseInt(text));
+	}
 	@Override
 	public String toString() {
 		return "" + value;

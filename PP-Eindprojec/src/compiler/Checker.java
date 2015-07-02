@@ -4,7 +4,6 @@ import grammar.GrammarBaseListener;
 import grammar.GrammarParser.AndExprContext;
 import grammar.GrammarParser.ArithExprContext;
 import grammar.GrammarParser.AssignExprContext;
-import grammar.GrammarParser.AssignStatContext;
 import grammar.GrammarParser.CompExprContext;
 import grammar.GrammarParser.DeclContext;
 import grammar.GrammarParser.ForStatContext;
@@ -108,12 +107,6 @@ public class Checker extends GrammarBaseListener {
 	}
 
 	@Override
-	public void exitAssignStat(AssignStatContext ctx) {
-		Type lType = result.getType(ctx.target());
-		typeCheck(ctx.expr(), lType);
-	}
-
-	@Override
 	public void exitAssignExpr(AssignExprContext ctx) {
 		Type type = result.getType(ctx.target());
 		typeCheck(ctx.expr(), type);
@@ -155,6 +148,7 @@ public class Checker extends GrammarBaseListener {
 			result.setType(ctx, t);
 		}
 		result.setOffset(ctx, scope.offset(ctx.getText()));
+		result.setOffset(ctx.ID(), scope.offset(ctx.getText()));
 	}
 
 	@Override
@@ -172,7 +166,7 @@ public class Checker extends GrammarBaseListener {
 		} else {
 			result.setType(ctx, t);
 		}
-		result.setOffset(ctx, scope.offset(ctx.getText()));
+		result.setOffset(ctx.ID(), scope.offset(ctx.getText()));
 	}
 
 	@Override
