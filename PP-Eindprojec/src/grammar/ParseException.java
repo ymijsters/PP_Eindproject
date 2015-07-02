@@ -4,6 +4,7 @@ import java.util.List;
 
 /** Exception class wrapping a list of error messages. */
 public class ParseException extends Exception {
+	private static final long serialVersionUID = 8068420621566857653L;
 	private final List<String> messages;
 
 	public ParseException(List<String> messages) {

@@ -10,4 +10,7 @@ public abstract class Operand {
 	public Operand(Type t) {
 		type = t;
 	}
+	public Type getType() {
+		return type;
+	}
 }

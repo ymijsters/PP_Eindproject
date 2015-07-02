@@ -1,0 +1,6 @@
+int i;
+int z = (33 - 3) + 1;
+boolean tru = false || !(false || false);
+for(i = 0; (z > i) || !(false && tru);i = i+i) {
+	i = i - i + 1 + z + i;
+}
