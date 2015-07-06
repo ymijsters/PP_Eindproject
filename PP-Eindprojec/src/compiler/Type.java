@@ -132,5 +132,8 @@ abstract public class Type {
 		public int size() {
 			return 1;
 		}
+		public String toString() {
+			return "Pointer[" + type.toString() + "]";
+		}
 	}
 }

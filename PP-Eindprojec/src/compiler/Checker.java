@@ -44,6 +44,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import compiler.Type.Array;
 import compiler.Type.Pointer;
+
 /**
  * Checks for contextual errors and determines variable offsets.
  */
@@ -53,13 +54,17 @@ public class Checker extends GrammarBaseListener {
 	private Scope scope;
 	private List<String> errors;
 
-
 	private boolean inLoop = false;
+
 	public Result check(ParseTree tree) throws ParseException {
 		this.scope = new Scope();
 		this.result = new Result();
 		this.errors = new ArrayList<>();
-		new ParseTreeWalker().walk(this, tree);
+		try {
+			new ParseTreeWalker().walk(this, tree);
+		} catch (Exception e) {
+			errors.add(e.toString());
+		}
 		if (hasErrors()) {
 			throw new ParseException(getErrors());
 		}
@@ -174,8 +179,9 @@ public class Checker extends GrammarBaseListener {
 
 	public void typeCheck(RuleContext ctx, Type expected) {
 		Type type = result.getType(ctx);
-		//identifier of an array can be cast to an pointer pointing to the first element in the array
-		//pointers can also be treated as integers and vice versa
+		// identifier of an array can be cast to an pointer pointing to the
+		// first element in the array
+		// pointers can also be treated as integers and vice versa
 		if (type instanceof Array) {
 			Array aType = (Array) type;
 			if (expected.getKind() == TypeKind.POINTER
@@ -195,8 +201,9 @@ public class Checker extends GrammarBaseListener {
 
 	public void typeKindCheck(RuleContext ctx, TypeKind expected) {
 		TypeKind typeKind = result.getType(ctx).getKind();
-		//identifier of an array can be cast to an pointer pointing to the first element in the array
-		//pointers can also be treated as integers and vice versa
+		// identifier of an array can be cast to an pointer pointing to the
+		// first element in the array
+		// pointers can also be treated as integers and vice versa
 		if (expected != typeKind
 				&& !(expected == TypeKind.POINTER && (typeKind == TypeKind.ARRAY || typeKind == TypeKind.INT))) {
 			errors.add(ctx.getText() + " doesn't have typekind " + expected);
@@ -266,6 +273,7 @@ public class Checker extends GrammarBaseListener {
 		Type t = scope.type(ctx.getText());
 		if (t == null) {
 			errors.add(ctx.getText() + " not defined");
+			return;
 		} else {
 			result.setType(ctx, t);
 		}
@@ -284,6 +292,7 @@ public class Checker extends GrammarBaseListener {
 		typeCheck(ctx.expr(1), Type.INT);
 		result.setType(ctx, Type.INT);
 	}
+
 	@Override
 	public void enterWhileStat(WhileStatContext ctx) {
 		inLoop = true;
@@ -296,17 +305,18 @@ public class Checker extends GrammarBaseListener {
 
 	@Override
 	public void exitBreakStat(BreakStatContext ctx) {
-		if(!inLoop) {
+		if (!inLoop) {
 			errors.add("cannot break: not in loop");
 		}
 	}
 
 	@Override
 	public void exitContStat(ContStatContext ctx) {
-		if(!inLoop) {
+		if (!inLoop) {
 			errors.add("cannot break: not in loop");
 		}
 	}
+
 	@Override
 	public void exitCompExpr(CompExprContext ctx) {
 		if (ctx.EQ() == ctx.NE()) {// only when both are null
