@@ -1,0 +1,26 @@
+import Sprockell.System
+prog :: [Instruction]
+prog = [Const 3 RegA, 
+	Store RegA (Addr 0), 
+	Const 4 RegA, 
+	Store RegA (Addr 1), 
+	Load (Addr 0) RegA, 
+	Push RegA, 
+	Load (Addr 1) RegA, 
+	Pop RegB, 
+	Compute Add RegB RegA RegA, 
+	Store RegA (Addr 2), 
+	Load (Addr 1) RegA, 
+	Push RegA, 
+	Load (Addr 2) RegA, 
+	Pop RegB, 
+	Compute Lt RegB RegA RegA, 
+	Branch RegA (Abs 17), 
+	Jump (Abs 22), 
+	Load (Addr 2) RegA, 
+	Const 1 RegB, 
+	Compute Add RegA RegB RegB, 
+	Store RegB (Addr 2), 
+	Jump (Abs 10), 
+	EndProg]
+main = run 1 prog

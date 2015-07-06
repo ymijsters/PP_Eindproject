@@ -1,0 +1,3 @@
+line 3:4 extraneous input 'int' expecting ID
+line 6:4 extraneous input 'int' expecting ID
+line 6:29 mismatched input 'i' expecting {'*', '/', '>=', '<=', ';', '||', '&&', '+', '-', '%', '<', '>', '==', '!=', '?'}

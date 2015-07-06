@@ -1,0 +1,3 @@
+line 2:0 extraneous input '/' expecting {<EOF>, '*', '++', '--', '!', '&', '-', '{', '(', 'println', 'boolean', 'for', 'int', 'while', 'if', 'true', 'false', 'break', 'continue', ID, NUM}
+line 2:8 extraneous input 'comment' expecting {'*', '/', '>=', '<=', ';', '||', '&&', '+', '-', '%', '<', '>', '==', '!=', '?'}
+line 3:0 no viable alternative at input 'int'
