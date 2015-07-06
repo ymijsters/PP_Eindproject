@@ -1,5 +1,8 @@
 package program;
-
+/**
+ * Represents a jump/branch target
+ *
+ */
 public class Target extends Operand {
 	private int index;
 

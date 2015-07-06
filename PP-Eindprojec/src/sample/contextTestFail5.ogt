@@ -1,0 +1,4 @@
+boolean[5] bs;
+int i = 0;
+while(bs[i++] = True) {
+}continue;

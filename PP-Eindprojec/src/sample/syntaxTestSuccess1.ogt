@@ -1,0 +1,6 @@
+int xtreSh = 3;
+int y = 4;
+int z = xtreSh + y;
+while(y < z) {
+	z++;
+}

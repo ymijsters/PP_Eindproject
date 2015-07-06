@@ -64,7 +64,7 @@ import program.Reg.Register;
 import program.Target;
 import compiler.Type.Array;
 
-/** Class to generate ILOC code for Simple Pascal. */
+/** Class to generate SPROCKELL code. */
 public class Generator extends GrammarBaseVisitor<MemAddr> {
 
 	/** The outcome of the checker phase. */
@@ -77,7 +77,6 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 	private final Reg regA = new Reg(Register.RegA);
 	private final Reg regB = new Reg(Register.RegB);
 	private final Reg regC = new Reg(Register.RegC);
-	private final Reg regD = new Reg(Register.RegD);
 	private final int IO = 0x1000000;
 	private final Operand ioAddr = new MemAddr(IO);
 

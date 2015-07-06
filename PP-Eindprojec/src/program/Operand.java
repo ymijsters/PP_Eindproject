@@ -1,5 +1,8 @@
 package program;
-
+/**
+ * Represents an operand of an instruction
+ *
+ */
 public abstract class Operand {
 	public static enum Type {
 		Int, Reg, Operator, MemAddr, Target

@@ -1,5 +1,8 @@
 package program;
-
+/**
+ * Represents an arithmical/logical/binary operator
+ * Not to be confused with the instruction type with the same name.
+ */
 public class Operator extends Operand {
 	private Op op;
 

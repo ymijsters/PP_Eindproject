@@ -1,5 +1,9 @@
 package program;
 
+/**
+ * Represents a Int type in SPROCKELL
+ *
+ */
 public class Int extends Operand {
 	private int value;
 	public Int(int v) {

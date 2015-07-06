@@ -1,5 +1,8 @@
 package program;
-
+/**
+ * Represents a MemAddr type in SPROCKELL
+ *
+ */
 public class MemAddr extends Operand {
 	private int address;
 	private Reg reg;

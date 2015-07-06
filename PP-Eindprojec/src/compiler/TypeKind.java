@@ -1,6 +1,6 @@
 package compiler;
 
-/** Pascal data type kind. */
+/** data type kind. */
 public enum TypeKind {
 	/** Integer base type. */
 	INT,

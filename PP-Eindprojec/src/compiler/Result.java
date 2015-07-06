@@ -3,7 +3,7 @@ package compiler;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeProperty;
 
-/** Class holding the results of the Simple Pascal checker. */
+/** Class holding the results of the checker. */
 public class Result {
 	/** Mapping from expressions to types. */
 	private final ParseTreeProperty<Type> types = new ParseTreeProperty<>();

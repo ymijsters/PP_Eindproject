@@ -1,9 +1,8 @@
-boolean[10] xs;
+int[10] xs;
 int i;
 for(int i = 0; i < xs.length; i = i + 1) {
 	xs[i] = i;
 }
-
-for(int i = 0; i < xs.length; i = i + 1) {
+for(int i = 0; i < xs.length i = i + 1) {
 	println(xs[i]);
 }

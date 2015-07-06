@@ -1,0 +1,8 @@
+int[5] xs;
+int * i;
+for(i = xs; i < xs.length; i = i+1) {
+	*i = i*2;
+}
+for(i = xs; i < xs.length; i = i+1) {
+	println(*i);/*should print 0,2,4,6,8*/
+}

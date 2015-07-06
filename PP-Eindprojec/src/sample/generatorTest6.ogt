@@ -1,0 +1,9 @@
+int i = 5;
+int j = 8;
+int *p;
+p = &i;
+println(p);/*should print 0*/
+println(*p);/*should print 5*/
+p = &j;
+println(p);/*should print 1*/
+println(*p);/*should print 8*/

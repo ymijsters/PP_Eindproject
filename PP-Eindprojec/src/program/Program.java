@@ -1,12 +1,11 @@
 package program;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
+/**
+ * Represents a SPROCKELL program.
+ *
+ */
 public class Program {
 	private final LinkedList<Instr> instructions;
 
@@ -21,7 +20,9 @@ public class Program {
 	public void addInstr(Instr i) {
 		instructions.add(i);
 	}
-
+	/**
+	 * Can be used for optimalisations
+	 */
 	public void removeLast() {
 		instructions.pollLast();
 	}

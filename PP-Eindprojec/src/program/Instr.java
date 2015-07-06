@@ -1,9 +1,11 @@
 package program;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * Represents a single SPROCKELL instruction
+ *
+ */
 public class Instr {
 	private final Opcode op;
 	private final List<Operand> args;

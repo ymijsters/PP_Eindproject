@@ -44,7 +44,9 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import compiler.Type.Array;
 import compiler.Type.Pointer;
-
+/**
+ * Checks for contextual errors and determines variable offsets.
+ */
 public class Checker extends GrammarBaseListener {
 
 	private Result result;
@@ -172,6 +174,8 @@ public class Checker extends GrammarBaseListener {
 
 	public void typeCheck(RuleContext ctx, Type expected) {
 		Type type = result.getType(ctx);
+		//identifier of an array can be cast to an pointer pointing to the first element in the array
+		//pointers can also be treated as integers and vice versa
 		if (type instanceof Array) {
 			Array aType = (Array) type;
 			if (expected.getKind() == TypeKind.POINTER
@@ -191,6 +195,8 @@ public class Checker extends GrammarBaseListener {
 
 	public void typeKindCheck(RuleContext ctx, TypeKind expected) {
 		TypeKind typeKind = result.getType(ctx).getKind();
+		//identifier of an array can be cast to an pointer pointing to the first element in the array
+		//pointers can also be treated as integers and vice versa
 		if (expected != typeKind
 				&& !(expected == TypeKind.POINTER && (typeKind == TypeKind.ARRAY || typeKind == TypeKind.INT))) {
 			errors.add(ctx.getText() + " doesn't have typekind " + expected);

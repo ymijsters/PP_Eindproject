@@ -5,8 +5,10 @@ import grammar.GrammarParser;
 import grammar.ParseException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -16,9 +18,14 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 import program.Program;
 
+/**
+ * This class compiles a source program to SPROCKELL instructions.
+ *
+ */
 public class Compiler {
 	private Checker checker = new Checker();
 	private Generator generator = new Generator();
+
 	public String compile(File file) {
 		ParseTree tree = parse(file);
 		try {
@@ -30,10 +37,25 @@ public class Compiler {
 		}
 		return null;
 	}
+
 	public static void main(String[] args) {
+		if (args.length != 2) {
+			System.out.println("USAGE: Compiler <INPUTFILE> <OUTPUTFILE>");
+		}
 		Compiler compiler = new Compiler();
-		System.out.println(compiler.compile(new File("src/sample/generatorTest4.ogt")));
+
+		String s = compiler.compile(new File(args[0]));
+		PrintWriter out = null;
+		try {
+			out = new PrintWriter(args[1]);
+			out.print(s);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			out.close();
+		}
 	}
+
 	public ParseTree parse(File file) {
 		try {
 			Lexer lexer = new GrammarLexer(new ANTLRInputStream(new FileReader(

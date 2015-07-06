@@ -1,5 +1,9 @@
 package program;
 
+/**
+ * Represents a register
+ *
+ */
 public class Reg extends Operand {
 	private Register reg;
 	public Reg(Register r) {

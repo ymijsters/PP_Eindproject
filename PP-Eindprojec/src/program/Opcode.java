@@ -1,5 +1,8 @@
 package program;
-
+/**
+ * Represents a instruction type
+ *
+ */
 public enum Opcode {
 	Const,
 	Compute,
