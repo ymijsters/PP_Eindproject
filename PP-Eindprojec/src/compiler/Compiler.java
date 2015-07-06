@@ -32,7 +32,7 @@ public class Compiler {
 	}
 	public static void main(String[] args) {
 		Compiler compiler = new Compiler();
-		System.out.println(compiler.compile(new File("src/sample/checkerTestSuccess3.ogt")));
+		System.out.println(compiler.compile(new File("src/sample/generatorTest4.ogt")));
 	}
 	public ParseTree parse(File file) {
 		try {

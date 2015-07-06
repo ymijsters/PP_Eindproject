@@ -1,6 +1,7 @@
 package compiler;
 
 import grammar.GrammarBaseListener;
+import grammar.GrammarParser.AddressExprContext;
 import grammar.GrammarParser.AndExprContext;
 import grammar.GrammarParser.ArithExprContext;
 import grammar.GrammarParser.ArrayDeclContext;
@@ -8,8 +9,11 @@ import grammar.GrammarParser.ArrayElemAssignStatContext;
 import grammar.GrammarParser.ArrayElemExprContext;
 import grammar.GrammarParser.ArrayLengthContext;
 import grammar.GrammarParser.AssignExprContext;
+import grammar.GrammarParser.BreakStatContext;
 import grammar.GrammarParser.CompExprContext;
+import grammar.GrammarParser.ContStatContext;
 import grammar.GrammarParser.DeclContext;
+import grammar.GrammarParser.DereferenceExprContext;
 import grammar.GrammarParser.ExprContext;
 import grammar.GrammarParser.ForStatContext;
 import grammar.GrammarParser.IdExprContext;
@@ -19,6 +23,8 @@ import grammar.GrammarParser.NegExprContext;
 import grammar.GrammarParser.NotExprContext;
 import grammar.GrammarParser.OrExprContext;
 import grammar.GrammarParser.ParExprContext;
+import grammar.GrammarParser.PointerAssignExprContext;
+import grammar.GrammarParser.PointerDeclContext;
 import grammar.GrammarParser.PostEditContext;
 import grammar.GrammarParser.PreEditContext;
 import grammar.GrammarParser.PrintStatContext;
@@ -37,6 +43,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import compiler.Type.Array;
+import compiler.Type.Pointer;
 
 public class Checker extends GrammarBaseListener {
 
@@ -44,6 +51,8 @@ public class Checker extends GrammarBaseListener {
 	private Scope scope;
 	private List<String> errors;
 
+
+	private boolean inLoop = false;
 	public Result check(ParseTree tree) throws ParseException {
 		this.scope = new Scope();
 		this.result = new Result();
@@ -114,14 +123,76 @@ public class Checker extends GrammarBaseListener {
 		}
 	}
 
+	@Override
+	public void exitPointerDecl(PointerDeclContext ctx) {
+		String id = ctx.ID().getText();
+		if (scope.contains(id)) {
+			errors.add(ctx.toString() + " : " + id + " already declared");
+		} else {
+			Type pointedType = result.getType(ctx.type());
+			Type type = new Pointer(pointedType);
+			scope.put(id, type);
+			result.setType(ctx.ID(), type);
+			result.setOffset(ctx.ID(), scope.offset(id));
+
+			if (ctx.expr() != null) {
+				typeCheck(ctx.expr(), type);
+			}
+		}
+	}
+
+	@Override
+	public void exitDereferenceExpr(DereferenceExprContext ctx) {
+		typeKindCheck(ctx.target(), TypeKind.POINTER);
+		Pointer type = (Pointer) result.getType(ctx.target());
+		result.setType(ctx, type.getType());
+	}
+
+	@Override
+	public void exitAddressExpr(AddressExprContext ctx) {
+		result.setType(ctx, new Pointer(result.getType(ctx.target())));
+	}
+
+	@Override
+	public void exitPointerAssignExpr(PointerAssignExprContext ctx) {
+		typeKindCheck(ctx.target(), TypeKind.POINTER);
+		Type pointedType = getPointedType(result.getType(ctx.target()));
+		typeCheck(ctx.expr(), pointedType);
+	}
+
+	public Type getPointedType(Type t) {
+		if (t instanceof Array) {
+			return ((Array) t).getElemType();
+		}
+		if (t instanceof Pointer) {
+			return ((Pointer) t).getType();
+		}
+		return null;
+	}
+
 	public void typeCheck(RuleContext ctx, Type expected) {
-		if (expected != result.getType(ctx)) {
+		Type type = result.getType(ctx);
+		if (type instanceof Array) {
+			Array aType = (Array) type;
+			if (expected.getKind() == TypeKind.POINTER
+					&& aType.getElemType().equals(
+							((Pointer) expected).getType())) {
+				return;
+			}
+		}
+		if (((expected.getKind() == TypeKind.POINTER || expected.getKind() == TypeKind.ARRAY) && type == Type.INT)
+				|| ((type.getKind() == TypeKind.POINTER || type.getKind() == TypeKind.ARRAY) && expected == Type.INT)) {
+			return;
+		}
+		if (!expected.equals(type)) {
 			errors.add(ctx.getText() + " doesn't have type " + expected);
 		}
 	}
 
 	public void typeKindCheck(RuleContext ctx, TypeKind expected) {
-		if (expected != result.getType(ctx).getKind()) {
+		TypeKind typeKind = result.getType(ctx).getKind();
+		if (expected != typeKind
+				&& !(expected == TypeKind.POINTER && (typeKind == TypeKind.ARRAY || typeKind == TypeKind.INT))) {
 			errors.add(ctx.getText() + " doesn't have typekind " + expected);
 		}
 	}
@@ -144,11 +215,13 @@ public class Checker extends GrammarBaseListener {
 
 	@Override
 	public void exitWhileStat(WhileStatContext ctx) {
+		inLoop = false;
 		typeCheck(ctx.expr(), Type.BOOL);
 	}
 
 	@Override
 	public void exitForStat(ForStatContext ctx) {
+		inLoop = false;
 		Type t1 = scope.type(ctx.ID(0).getText());
 		typeCheck(ctx.expr(0), t1);
 		typeCheck(ctx.expr(1), Type.BOOL);
@@ -205,7 +278,29 @@ public class Checker extends GrammarBaseListener {
 		typeCheck(ctx.expr(1), Type.INT);
 		result.setType(ctx, Type.INT);
 	}
+	@Override
+	public void enterWhileStat(WhileStatContext ctx) {
+		inLoop = true;
+	}
 
+	@Override
+	public void enterForStat(ForStatContext ctx) {
+		inLoop = true;
+	}
+
+	@Override
+	public void exitBreakStat(BreakStatContext ctx) {
+		if(!inLoop) {
+			errors.add("cannot break: not in loop");
+		}
+	}
+
+	@Override
+	public void exitContStat(ContStatContext ctx) {
+		if(!inLoop) {
+			errors.add("cannot break: not in loop");
+		}
+	}
 	@Override
 	public void exitCompExpr(CompExprContext ctx) {
 		if (ctx.EQ() == ctx.NE()) {// only when both are null
@@ -248,8 +343,6 @@ public class Checker extends GrammarBaseListener {
 			}
 		}
 	}
-
-
 
 	@Override
 	public void exitArrayElemAssignStat(ArrayElemAssignStatContext ctx) {

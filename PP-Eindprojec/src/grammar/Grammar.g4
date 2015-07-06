@@ -4,6 +4,7 @@ grammar Grammar;
 program: stat+ EOF;
 
 stat: type ID (ASSIGN expr)? SEMI         			  #decl
+	| type TIMES ID (ASSIGN expr)? SEMI         	  #pointerDecl
 	| type LSQ NUM RSQ ID 
 	(ASSIGN LSQ expr (COMMA expr)* RSQ)? SEMI		  #arrayDecl
     | IF LPAR expr RPAR stat (ELSE stat)? 			  #ifStat 
@@ -14,22 +15,25 @@ stat: type ID (ASSIGN expr)? SEMI         			  #decl
                ID ASSIGN expr RPAR stat   			  #forStat 
     | LCURLY stat* RCURLY                			  #blockStat
     | PRINT LPAR expr RPAR SEMI #printStat
-    //| BREAK SEMI                         			  #breakStat
+    | BREAK SEMI                         			  #breakStat
     | expr SEMI                          			  #exprStat
-    //| CONTINUE SEMI                       #contStat
+    | CONTINUE SEMI                       #contStat
     ;
 
 target
     : ID              #idTarget
     ;
 
-expr: expr (PLUS | MINUS | TIMES | DIVIDE) expr	#arithExpr
+expr: expr (PLUS | MINUS | TIMES | DIVIDE | MOD) expr	#arithExpr
 	| target LSQ expr RSQ						#arrayElemExpr
 	| expr AND expr								#andExpr
 	| expr OR expr								#orExpr
 	| target ASSIGN expr						#assignExpr
+	| TIMES target ASSIGN expr					#pointerAssignExpr
 	| expr (GT | GE | LT | LE | EQ | NE ) expr	#compExpr
 	| expr TIF expr TELSE expr					#ternaryExpr
+	| TIMES target								#dereferenceExpr
+	| ADDRESS target							#addressExpr
 	| (NUM | TRUE | FALSE)						#varExpr
 	| target (DECR | INCR)						#postEdit
 	| (DECR | INCR)	target 						#preEdit
@@ -56,10 +60,11 @@ ASSIGN: '=';
 NOT: '!';
 OR: '||';
 AND: '&&';
-BIT_OR: '|';
-BIT_AND: '&';
+ADDRESS: '&';
+
 PLUS: '+';
 MINUS: '-';
+MOD: '%';
 LT: '<';
 GT: '>';
 EQ: '==';
@@ -71,7 +76,6 @@ RCURLY: '}';
 LPAR: '(';
 RPAR: ')';
 
-IN: 'in';
 PRINT: 'println';
 BOOL: 'boolean';
 FOR: 'for';

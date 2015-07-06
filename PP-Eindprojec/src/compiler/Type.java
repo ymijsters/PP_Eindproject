@@ -107,6 +107,9 @@ abstract public class Type {
 	}
 	static public class Pointer extends Type {
 		private final Type type;
+		public Type getType() {
+			return type;
+		}
 		public Pointer(Type t) {
 			super(TypeKind.POINTER);
 			type = t;

@@ -1,0 +1,8 @@
+int[5] xs;
+int i;
+int * p = xs;
+*p = 5;
+println(xs[0]);
+p++;
+*p=4;
+println(xs[1]);

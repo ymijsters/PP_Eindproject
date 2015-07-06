@@ -69,6 +69,17 @@ public class GrammarTreeListenerTest {
 		}
 	}
 	@Test
+	public void testSuccess4() {
+		try {
+			ParseTree tree = parse(new File(TEST_DIR
+					+ "checkerTestSuccess4.ogt"));
+			Result result = checker.check(tree);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			Assert.fail();
+		}
+	}
+	@Test
 	public void testFail1() {
 		try {
 			ParseTree tree = parse(new File(TEST_DIR + "checkerTestFail1.ogt"));

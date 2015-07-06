@@ -1,4 +1,5 @@
 int i;
 for(i=9;i >= 0;i = i - 1) {
-	println(i);/*should print 9..0*/
+	if(i % 2 == 1) {continue;}
+	println(i);/*should print 9,7,5,3,1*/
 }

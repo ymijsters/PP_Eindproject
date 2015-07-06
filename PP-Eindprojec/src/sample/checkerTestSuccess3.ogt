@@ -1,0 +1,9 @@
+int[5] xs;
+int i;
+for(i = 0; i < xs.length; i = i + 1) {
+	xs[i] = i*2;
+}
+
+for(i = 0; i < xs.length; i = i + 1) {
+	println(xs[i]);
+}

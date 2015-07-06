@@ -31,6 +31,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitDecl(GrammarParser.DeclContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code pointerDecl}
+	 * labeled alternative in {@link GrammarParser#stat}.
+	 * @param ctx the parse tree
+	 */
+	void enterPointerDecl(GrammarParser.PointerDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code pointerDecl}
+	 * labeled alternative in {@link GrammarParser#stat}.
+	 * @param ctx the parse tree
+	 */
+	void exitPointerDecl(GrammarParser.PointerDeclContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code arrayDecl}
 	 * labeled alternative in {@link GrammarParser#stat}.
 	 * @param ctx the parse tree
@@ -115,6 +127,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitPrintStat(GrammarParser.PrintStatContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code breakStat}
+	 * labeled alternative in {@link GrammarParser#stat}.
+	 * @param ctx the parse tree
+	 */
+	void enterBreakStat(GrammarParser.BreakStatContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code breakStat}
+	 * labeled alternative in {@link GrammarParser#stat}.
+	 * @param ctx the parse tree
+	 */
+	void exitBreakStat(GrammarParser.BreakStatContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code exprStat}
 	 * labeled alternative in {@link GrammarParser#stat}.
 	 * @param ctx the parse tree
@@ -126,6 +150,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExprStat(GrammarParser.ExprStatContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code contStat}
+	 * labeled alternative in {@link GrammarParser#stat}.
+	 * @param ctx the parse tree
+	 */
+	void enterContStat(GrammarParser.ContStatContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code contStat}
+	 * labeled alternative in {@link GrammarParser#stat}.
+	 * @param ctx the parse tree
+	 */
+	void exitContStat(GrammarParser.ContStatContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code idTarget}
 	 * labeled alternative in {@link GrammarParser#target}.
@@ -150,6 +186,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAndExpr(GrammarParser.AndExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code dereferenceExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterDereferenceExpr(GrammarParser.DereferenceExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code dereferenceExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitDereferenceExpr(GrammarParser.DereferenceExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code arrayLength}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -186,6 +234,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVarExpr(GrammarParser.VarExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code addressExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterAddressExpr(GrammarParser.AddressExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code addressExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitAddressExpr(GrammarParser.AddressExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ternaryExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -282,6 +342,18 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNegExpr(GrammarParser.NegExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code pointerAssignExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterPointerAssignExpr(GrammarParser.PointerAssignExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code pointerAssignExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitPointerAssignExpr(GrammarParser.PointerAssignExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code arithExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
