@@ -49,24 +49,17 @@ abstract public class Type {
 	}
 
 	static public class Array extends Type {
-		private final int lower;
-		private final int upper;
+		private final int length;
 		private final Type elemType;
 
-		private Array(int lower, int upper, Type elemType) {
+		public Array(int l, Type elemType) {
 			super(TypeKind.ARRAY);
-			assert upper >= lower;
-			this.lower = lower;
-			this.upper = upper;
+			length = l;
 			this.elemType = elemType;
 		}
 
-		public int getLower() {
-			return this.lower;
-		}
-
-		public int getUpper() {
-			return this.upper;
+		public int getLength() {
+			return this.length;
 		}
 
 		public Type getElemType() {
@@ -75,12 +68,12 @@ abstract public class Type {
 
 		@Override
 		public int size() {
-			return (getUpper() - getLower() + 1) * this.elemType.size();
+			return elemType.size() * length;
 		}
 
 		@Override
 		public String toString() {
-			return "Array [" + this.lower + ".." + this.upper + "] of "
+			return "Array [" + length + "] of "
 					+ this.elemType;
 		}
 
@@ -89,8 +82,7 @@ abstract public class Type {
 			final int prime = 31;
 			int result = 1;
 			result = prime * result + this.elemType.hashCode();
-			result = prime * result + this.lower;
-			result = prime * result + this.upper;
+			result = prime * result + this.length;
 			return result;
 		}
 
@@ -106,14 +98,36 @@ abstract public class Type {
 			if (!this.elemType.equals(other.elemType)) {
 				return false;
 			}
-			if (this.lower != other.lower) {
-				return false;
-			}
-			if (this.upper != other.upper) {
+			if (this.length != other.length) {
 				return false;
 			}
 			return true;
 		}
 
+	}
+	static public class Pointer extends Type {
+		private final Type type;
+		public Pointer(Type t) {
+			super(TypeKind.POINTER);
+			type = t;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (!(obj instanceof Pointer)) {
+				return false;
+			}
+			Pointer other = (Pointer) obj;
+			if (!this.type.equals(other.type)) {
+				return false;
+			}
+			return true;
+		}
+		@Override
+		public int size() {
+			return 1;
+		}
 	}
 }

@@ -3,25 +3,28 @@ grammar Grammar;
 
 program: stat+ EOF;
 
-stat: type ID (ASSIGN expr)? SEMI         #decl
-    | IF LPAR expr RPAR stat (ELSE stat)? #ifStat 
-    | WHILE LPAR expr RPAR stat           #whileStat 
+stat: type ID (ASSIGN expr)? SEMI         			  #decl
+	| type LSQ NUM RSQ ID 
+	(ASSIGN LSQ expr (COMMA expr)* RSQ)? SEMI		  #arrayDecl
+    | IF LPAR expr RPAR stat (ELSE stat)? 			  #ifStat 
+    | WHILE LPAR expr RPAR stat          			  #whileStat 
+    | target LSQ expr RSQ ASSIGN expr SEMI     		  #arrayElemAssignStat
     | FOR LPAR ID ASSIGN expr SEMI
                expr SEMI
-               ID ASSIGN expr RPAR stat   #forStat 
-    | LCURLY stat* RCURLY                 #blockStat
+               ID ASSIGN expr RPAR stat   			  #forStat 
+    | LCURLY stat* RCURLY                			  #blockStat
     | PRINT LPAR expr RPAR SEMI #printStat
-    //| BREAK SEMI                          #breakStat
-    | expr SEMI                          #exprStat
+    //| BREAK SEMI                         			  #breakStat
+    | expr SEMI                          			  #exprStat
     //| CONTINUE SEMI                       #contStat
     ;
 
 target
     : ID              #idTarget
-    //| ID LSQ expr RSQ #arrayTarget
     ;
 
 expr: expr (PLUS | MINUS | TIMES | DIVIDE) expr	#arithExpr
+	| target LSQ expr RSQ						#arrayElemExpr
 	| expr AND expr								#andExpr
 	| expr OR expr								#orExpr
 	| target ASSIGN expr						#assignExpr
@@ -32,6 +35,7 @@ expr: expr (PLUS | MINUS | TIMES | DIVIDE) expr	#arithExpr
 	| (DECR | INCR)	target 						#preEdit
 	| ID										#idExpr
 	| NOT expr									#notExpr
+	| target DOT LENGTH							#arrayLength
 	| LPAR expr RPAR							#parExpr
 	| MINUS expr								#negExpr
 	;
@@ -73,6 +77,7 @@ BOOL: 'boolean';
 FOR: 'for';
 INT: 'int';
 WHILE: 'while';
+LENGTH: 'length';
 IF: 'if';
 ELSE: 'else';
 TRUE: 'true';
@@ -87,4 +92,5 @@ ID: LETTER (LETTER | DIGIT)*;
 NUM: DIGIT+;
 STRING: '"' (~["\\] | '\\'.)* '"';
 
+COMMENT:'/*'.*?'*/' -> skip;
 WS: [ \t\r\n]+ -> skip;

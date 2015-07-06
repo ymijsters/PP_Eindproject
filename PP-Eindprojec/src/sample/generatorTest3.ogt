@@ -1,5 +1,5 @@
 int i = 0;
 int n;
 while((n = i++) < 10) {
-	println(n);
+	println(n);/*should print 0..9*/
 }

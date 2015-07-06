@@ -3,9 +3,14 @@ package compiler;
 import grammar.GrammarBaseListener;
 import grammar.GrammarParser.AndExprContext;
 import grammar.GrammarParser.ArithExprContext;
+import grammar.GrammarParser.ArrayDeclContext;
+import grammar.GrammarParser.ArrayElemAssignStatContext;
+import grammar.GrammarParser.ArrayElemExprContext;
+import grammar.GrammarParser.ArrayLengthContext;
 import grammar.GrammarParser.AssignExprContext;
 import grammar.GrammarParser.CompExprContext;
 import grammar.GrammarParser.DeclContext;
+import grammar.GrammarParser.ExprContext;
 import grammar.GrammarParser.ForStatContext;
 import grammar.GrammarParser.IdExprContext;
 import grammar.GrammarParser.IdTargetContext;
@@ -16,6 +21,7 @@ import grammar.GrammarParser.OrExprContext;
 import grammar.GrammarParser.ParExprContext;
 import grammar.GrammarParser.PostEditContext;
 import grammar.GrammarParser.PreEditContext;
+import grammar.GrammarParser.PrintStatContext;
 import grammar.GrammarParser.TernaryExprContext;
 import grammar.GrammarParser.TypeContext;
 import grammar.GrammarParser.VarExprContext;
@@ -30,7 +36,10 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import compiler.Type.Array;
+
 public class Checker extends GrammarBaseListener {
+
 	private Result result;
 	private Scope scope;
 	private List<String> errors;
@@ -45,7 +54,7 @@ public class Checker extends GrammarBaseListener {
 		}
 		return this.result;
 	}
-	
+
 	@Override
 	public void exitNegExpr(NegExprContext ctx) {
 		typeCheck(ctx.expr(), Type.INT);
@@ -62,7 +71,7 @@ public class Checker extends GrammarBaseListener {
 		typeCheck(ctx.expr(0), Type.BOOL);
 		typeCheck(ctx.expr(1), ctx.expr(2));
 		result.setType(ctx, result.getType(ctx.expr(1)));
-		
+
 	}
 
 	/** Indicates if any errors were encountered in this tree listener. */
@@ -96,7 +105,7 @@ public class Checker extends GrammarBaseListener {
 		} else {
 			Type type = result.getType(ctx.type());
 			scope.put(id, type);
-			result.setType(ctx, type);
+			result.setType(ctx.ID(), type);
 			result.setOffset(ctx.ID(), scope.offset(id));
 
 			if (ctx.expr() != null) {
@@ -108,6 +117,12 @@ public class Checker extends GrammarBaseListener {
 	public void typeCheck(RuleContext ctx, Type expected) {
 		if (expected != result.getType(ctx)) {
 			errors.add(ctx.getText() + " doesn't have type " + expected);
+		}
+	}
+
+	public void typeKindCheck(RuleContext ctx, TypeKind expected) {
+		if (expected != result.getType(ctx).getKind()) {
+			errors.add(ctx.getText() + " doesn't have typekind " + expected);
 		}
 	}
 
@@ -176,6 +191,7 @@ public class Checker extends GrammarBaseListener {
 			result.setType(ctx, t);
 		}
 		result.setOffset(ctx.ID(), scope.offset(ctx.getText()));
+		result.setOffset(ctx, scope.offset(ctx.getText()));
 	}
 
 	@Override
@@ -192,7 +208,7 @@ public class Checker extends GrammarBaseListener {
 
 	@Override
 	public void exitCompExpr(CompExprContext ctx) {
-		if(ctx.EQ() == ctx.NE()) {//only when both are null
+		if (ctx.EQ() == ctx.NE()) {// only when both are null
 			typeCheck(ctx.expr(0), Type.INT);
 			typeCheck(ctx.expr(1), Type.INT);
 		} else {
@@ -215,6 +231,50 @@ public class Checker extends GrammarBaseListener {
 	}
 
 	@Override
+	public void exitArrayDecl(ArrayDeclContext ctx) {
+		String id = ctx.ID().getText();
+		if (scope.contains(id)) {
+			errors.add(ctx.toString() + " : " + id + " already declared");
+		} else {
+			Type elemType = result.getType(ctx.type());
+			int num = Integer.parseInt(ctx.NUM().getText());
+			Type type = new Array(num, elemType);
+			scope.put(id, type);
+			result.setType(ctx.ID(), type);
+			result.setOffset(ctx.ID(), scope.offset(id));
+
+			for (ExprContext expr : ctx.expr()) {
+				typeCheck(expr, elemType);
+			}
+		}
+	}
+
+
+
+	@Override
+	public void exitArrayElemAssignStat(ArrayElemAssignStatContext ctx) {
+		typeKindCheck(ctx.target(), TypeKind.ARRAY);
+		Array type = (Array) result.getType(ctx.target());
+		typeCheck(ctx.expr(1), type.getElemType());
+		typeCheck(ctx.expr(0), Type.INT);
+	}
+
+	@Override
+	public void exitArrayElemExpr(ArrayElemExprContext ctx) {
+		typeCheck(ctx.expr(), Type.INT);
+		typeKindCheck(ctx.target(), TypeKind.ARRAY);
+		Array type = (Array) result.getType(ctx.target());
+		result.setType(ctx, type.getElemType());
+	}
+
+	@Override
+	public void exitPrintStat(PrintStatContext ctx) {
+		if (result.getType(ctx.expr()).getKind().equals(TypeKind.ARRAY)) {
+			errors.add("Cannot print arrays(sorry)");
+		}
+	}
+
+	@Override
 	public void exitType(TypeContext ctx) {
 		Type t = null;
 		if (ctx.BOOL() != null) {
@@ -223,5 +283,11 @@ public class Checker extends GrammarBaseListener {
 			t = Type.INT;
 		}
 		result.setType(ctx, t);
+	}
+
+	@Override
+	public void exitArrayLength(ArrayLengthContext ctx) {
+		typeKindCheck(ctx.target(), TypeKind.ARRAY);
+		result.setType(ctx, Type.INT);
 	}
 }

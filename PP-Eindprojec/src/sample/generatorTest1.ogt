@@ -1,9 +1,9 @@
 int i = (-1) + 2;
-println(i);
+println(i); /*should print 1*/
 i++;
-println(i);
+println(i); /*should print 2*/
 i--;i++;i++;
-println(i);
+println(i); /*should print 3*/
 int z = (33 - 3) + 1;
 boolean tru = false || !(false || false);
-println(true && tru);
+println(true && tru); /*should print 1*/

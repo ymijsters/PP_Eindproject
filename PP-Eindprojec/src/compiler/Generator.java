@@ -1,15 +1,15 @@
 package compiler;
 
+import static program.Opcode.Branch;
 import static program.Opcode.Compute;
 import static program.Opcode.Const;
 import static program.Opcode.EndProg;
+import static program.Opcode.Jump;
 import static program.Opcode.Load;
 import static program.Opcode.Pop;
 import static program.Opcode.Push;
 import static program.Opcode.Store;
 import static program.Opcode.Write;
-import static program.Opcode.Jump;
-import static program.Opcode.Branch;
 import static program.Operator.Op.Add;
 import static program.Operator.Op.Div;
 import static program.Operator.Op.Mul;
@@ -17,6 +17,10 @@ import static program.Operator.Op.Sub;
 import grammar.GrammarBaseVisitor;
 import grammar.GrammarParser.AndExprContext;
 import grammar.GrammarParser.ArithExprContext;
+import grammar.GrammarParser.ArrayDeclContext;
+import grammar.GrammarParser.ArrayElemAssignStatContext;
+import grammar.GrammarParser.ArrayElemExprContext;
+import grammar.GrammarParser.ArrayLengthContext;
 import grammar.GrammarParser.AssignExprContext;
 import grammar.GrammarParser.CompExprContext;
 import grammar.GrammarParser.DeclContext;
@@ -49,8 +53,11 @@ import program.Reg;
 import program.Reg.Register;
 import program.Target;
 
+import compiler.Type.Array;
+
 /** Class to generate ILOC code for Simple Pascal. */
 public class Generator extends GrammarBaseVisitor<MemAddr> {
+
 	/** The outcome of the checker phase. */
 	private Result result;
 	/** The program being built. */
@@ -192,7 +199,9 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 	private MemAddr getMem(ParseTree tree) {
 		return new MemAddr(result.getOffset(tree));
 	}
-
+	private MemAddr getArrayMem(ParseTree tree, int i) {
+		return new MemAddr(result.getOffset(tree) + i);
+	}
 	@Override
 	public MemAddr visitVarExpr(VarExprContext ctx) {
 		if (ctx.NUM() != null) {
@@ -263,6 +272,52 @@ public class Generator extends GrammarBaseVisitor<MemAddr> {
 		Op o = ctx.DECR() == null ? Add : Sub;
 		append(Compute, new Operator(o), regA, regB, regB);
 		append(Store, regB, mem);
+		append(Push, regA);
+		return null;
+	}
+
+	@Override
+	public MemAddr visitArrayDecl(ArrayDeclContext ctx) {
+		int length = ((Array) result.getType(ctx.ID())).getLength();
+		if (ctx.expr().size() == 0) {
+			for (int i = 0; i < length; i++) {
+				append(Store, zero, getArrayMem(ctx.ID(), i));
+			}
+		} else {
+			for (int i = 0; i < length; i++) {
+				visit(ctx.expr(i));
+				prog.removeLast();
+				append(Store, regA, getArrayMem(ctx.ID(), i));
+			}
+		}
+		return null;
+	}
+	@Override
+	public MemAddr visitArrayElemAssignStat(ArrayElemAssignStatContext ctx) {
+		visit(ctx.expr(0));
+		visit(ctx.expr(1));
+		prog.removeLast();
+		append(Pop, regC);
+		append(Const, new Int(result.getOffset(ctx.target())), regB);
+		append(Compute, new Operator(Add), regC, regB, regC);
+		append(Store, regA, new MemAddr(regC));
+		return null;
+	}
+
+	@Override
+	public MemAddr visitArrayLength(ArrayLengthContext ctx) {
+		append(Const, new Int(((Array) result.getType(ctx.target())).getLength()), regA);
+		append(Push, regA);
+		return null;
+	}
+
+	@Override
+	public MemAddr visitArrayElemExpr(ArrayElemExprContext ctx) {
+		visit(ctx.expr());
+		prog.removeLast();
+		append(Const, new Int(result.getOffset(ctx.target())), regB);
+		append(Compute, new Operator(Add), regA, regB, regA);
+		append(Load, new MemAddr(regA), regA);
 		append(Push, regA);
 		return null;
 	}
