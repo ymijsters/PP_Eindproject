@@ -1,5 +1,8 @@
-int i;
-for(i=9;i >= 0;i = i - 1) {
-	if(i % 2 == 1) {continue;}
-	println(i);/*should print 8,6,4,2,0*/
+int[5] is;
+int *i;
+for(i = is; i < is.length; i = i+1) {
+	*i = i*2;
+}
+for(i = is; i < is.length; i = i+1) {
+	println(*i);/*should print 0,2,4,6,8*/
 }
